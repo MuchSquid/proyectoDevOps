@@ -13,6 +13,7 @@ class BookBase(BaseModel):
     publisher: Optional[str] = Field(None, max_length=255)
     cover_image: Optional[str] = Field(None, max_length=500)
     category_id: Optional[int] = None
+    available_copies: int = Field(1, ge=0, description="Número de copias disponibles")
 
 
 class BookCreate(BookBase):
