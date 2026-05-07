@@ -31,6 +31,7 @@ class BookUpdate(BaseModel):
     publisher: Optional[str] = Field(None, max_length=255)
     cover_image: Optional[str] = Field(None, max_length=500)
     category_id: Optional[int] = None
+    available_copies: Optional[int] = Field(None, ge=0, description="Número de copias disponibles")
 
 
 class BookResponse(BookBase):
