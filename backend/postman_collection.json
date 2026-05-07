@@ -19,6 +19,11 @@
       "key": "user_id",
       "value": "",
       "type": "string"
+    },
+    {
+      "key": "reservation_id",
+      "value": "",
+      "type": "string"
     }
   ],
   "item": [
@@ -344,7 +349,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"title\": \"Clean Code - Updated Edition\",\n  \"description\": \"A handbook of agile software craftsmanship - Updated\",\n  \"publication_year\": 2009,\n  \"language\": \"EN\",\n  \"pages\": 500,\n  \"publisher\": \"Prentice Hall\",\n  \"cover_image\": \"https://example.com/clean-code-updated.jpg\",\n  \"category_id\": 1\n}"
+              "raw": "{\n  \"title\": \"Clean Code - Updated Edition\",\n  \"description\": \"A handbook of agile software craftsmanship - Updated\",\n  \"publication_year\": 2009,\n  \"language\": \"EN\",\n  \"pages\": 500,\n  \"publisher\": \"Prentice Hall\",\n  \"cover_image\": \"https://example.com/clean-code-updated.jpg\",\n  \"category_id\": 1,\n  \"available_copies\": 5\n}"
             },
             "url": {
               "raw": "{{base_url}}/books/{{book_id}}",
@@ -393,7 +398,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": 1,\n  \"title\": \"Clean Code - Updated Edition\",\n  \"description\": \"A handbook of agile software craftsmanship - Updated\",\n  \"publication_year\": 2009,\n  \"language\": \"EN\",\n  \"pages\": 500,\n  \"publisher\": \"Prentice Hall\",\n  \"cover_image\": \"https://example.com/clean-code-updated.jpg\",\n  \"category_id\": 1,\n  \"created_at\": \"2024-01-15T10:30:00Z\",\n  \"updated_at\": \"2024-01-15T11:00:00Z\"\n}"
+              "body": "{\n  \"id\": 1,\n  \"title\": \"Clean Code - Updated Edition\",\n  \"description\": \"A handbook of agile software craftsmanship - Updated\",\n  \"publication_year\": 2009,\n  \"language\": \"EN\",\n  \"pages\": 500,\n  \"publisher\": \"Prentice Hall\",\n  \"cover_image\": \"https://example.com/clean-code-updated.jpg\",\n  \"category_id\": 1,\n  \"available_copies\": 5,\n  \"created_at\": \"2024-01-15T10:30:00Z\",\n  \"updated_at\": \"2024-01-15T11:00:00Z\"\n}"
             }
           ],
           "event": [
@@ -1956,6 +1961,696 @@
                 }
               ],
               "body": "{\n  \"detail\": \"Physical deletion of loans is not supported. Use PATCH /loans/{loan_id}/cancel instead.\"\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Validar status code 405",
+                  "pm.test(\"Status code is 405\", function () {",
+                  "  pm.response.to.have.status(405);",
+                  "});",
+                  "",
+                  "// Validar response time",
+                  "pm.test(\"Response time is less than 500ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(500);",
+                  "});",
+                  "",
+                  "// Validar que la respuesta sea JSON válido",
+                  "pm.test(\"Response is valid JSON\", function () {",
+                  "  pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "// Validar que el error indique usar cancel",
+                  "pm.test(\"Error message mentions cancel\", function () {",
+                  "  pm.expect(pm.response.json().detail).to.include(\"cancel\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Reservations",
+      "item": [
+        {
+          "name": "Create Reservation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": {{user_id}},\n  \"book_id\": {{book_id}}\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/reservations/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reservations",
+                ""
+              ]
+            },
+            "description": "Crea una nueva reserva de libro (solo cuando available_copies == 0)"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"user_id\": 1,\n  \"book_id\": 1\n}"
+                },
+                "url": {
+                  "raw": "http://localhost:8000/reservations/",
+                  "host": [
+                    "http://localhost:8000"
+                  ],
+                  "path": [
+                    "reservations",
+                    ""
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"user_id\": 1,\n  \"book_id\": 1,\n  \"reservation_date\": \"2024-01-15T10:30:00Z\",\n  \"expiration_date\": \"2024-01-18T10:30:00Z\",\n  \"status\": \"ACTIVE\",\n  \"created_at\": \"2024-01-15T10:30:00Z\",\n  \"updated_at\": null\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Validar status code",
+                  "pm.test(\"Status code is 201\", function () {",
+                  "  pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "// Validar response time",
+                  "pm.test(\"Response time is less than 500ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(500);",
+                  "});",
+                  "",
+                  "// Validar que la respuesta sea JSON válido",
+                  "pm.test(\"Response is valid JSON\", function () {",
+                  "  pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "// Validar campos principales",
+                  "pm.test(\"Reservation has user_id\", function () {",
+                  "  pm.expect(pm.response.json()).to.have.property('user_id');",
+                  "});",
+                  "",
+                  "pm.test(\"Reservation has book_id\", function () {",
+                  "  pm.expect(pm.response.json()).to.have.property('book_id');",
+                  "});",
+                  "",
+                  "pm.test(\"Reservation has id\", function () {",
+                  "  pm.expect(pm.response.json()).to.have.property('id');",
+                  "});",
+                  "",
+                  "pm.test(\"Reservation has status ACTIVE\", function () {",
+                  "  pm.expect(pm.response.json().status).to.eql('ACTIVE');",
+                  "});",
+                  "",
+                  "pm.test(\"Reservation has expiration_date\", function () {",
+                  "  pm.expect(pm.response.json()).to.have.property('expiration_date');",
+                  "});",
+                  "",
+                  "// Guardar el ID de la reserva en variable de entorno",
+                  "if (pm.response.json().id) {",
+                  "  pm.environment.set(\"reservation_id\", pm.response.json().id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get All Reservations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reservations/?skip=0&limit=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reservations",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "skip",
+                  "value": "0"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Obtiene todas las reservas con paginación"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:8000/reservations/?skip=0&limit=10",
+                  "host": [
+                    "http://localhost:8000"
+                  ],
+                  "path": [
+                    "reservations",
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "key": "skip",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 1,\n    \"user_id\": 1,\n    \"book_id\": 1,\n    \"reservation_date\": \"2024-01-15T10:30:00Z\",\n    \"expiration_date\": \"2024-01-18T10:30:00Z\",\n    \"status\": \"ACTIVE\",\n    \"created_at\": \"2024-01-15T10:30:00Z\",\n    \"updated_at\": null\n  }\n]"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Validar status code",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Validar response time",
+                  "pm.test(\"Response time is less than 500ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(500);",
+                  "});",
+                  "",
+                  "// Validar que la respuesta sea JSON válido",
+                  "pm.test(\"Response is valid JSON\", function () {",
+                  "  pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "// Validar que sea un array",
+                  "pm.test(\"Response is an array\", function () {",
+                  "  pm.expect(pm.response.json()).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Reservation by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reservations/{{reservation_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reservations",
+                "{{reservation_id}}"
+              ]
+            },
+            "description": "Obtiene una reserva específica por su ID"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:8000/reservations/1",
+                  "host": [
+                    "http://localhost:8000"
+                  ],
+                  "path": [
+                    "reservations",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"user_id\": 1,\n  \"book_id\": 1,\n  \"reservation_date\": \"2024-01-15T10:30:00Z\",\n  \"expiration_date\": \"2024-01-18T10:30:00Z\",\n  \"status\": \"ACTIVE\",\n  \"created_at\": \"2024-01-15T10:30:00Z\",\n  \"updated_at\": null\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Validar status code",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Validar response time",
+                  "pm.test(\"Response time is less than 500ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(500);",
+                  "});",
+                  "",
+                  "// Validar que la respuesta sea JSON válido",
+                  "pm.test(\"Response is valid JSON\", function () {",
+                  "  pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "// Validar campos principales",
+                  "pm.test(\"Reservation has user_id\", function () {",
+                  "  pm.expect(pm.response.json()).to.have.property('user_id');",
+                  "});",
+                  "",
+                  "pm.test(\"Reservation has id\", function () {",
+                  "  pm.expect(pm.response.json()).to.have.property('id');",
+                  "});",
+                  "",
+                  "pm.test(\"Reservation ID matches requested ID\", function () {",
+                  "  pm.expect(pm.response.json().id.toString()).to.eql(pm.environment.get(\"reservation_id\"));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Reservations by User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reservations/user/{{user_id}}?skip=0&limit=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reservations",
+                "user",
+                "{{user_id}}"
+              ],
+              "query": [
+                {
+                  "key": "skip",
+                  "value": "0"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Obtiene reservas de un usuario específico"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:8000/reservations/user/1?skip=0&limit=10",
+                  "host": [
+                    "http://localhost:8000"
+                  ],
+                  "path": [
+                    "reservations",
+                    "user",
+                    "1"
+                  ],
+                  "query": [
+                    {
+                      "key": "skip",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 1,\n    \"user_id\": 1,\n    \"book_id\": 1,\n    \"reservation_date\": \"2024-01-15T10:30:00Z\",\n    \"expiration_date\": \"2024-01-18T10:30:00Z\",\n    \"status\": \"ACTIVE\",\n    \"created_at\": \"2024-01-15T10:30:00Z\",\n    \"updated_at\": null\n  }\n]"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Validar status code",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Validar response time",
+                  "pm.test(\"Response time is less than 500ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(500);",
+                  "});",
+                  "",
+                  "// Validar que la respuesta sea JSON válido",
+                  "pm.test(\"Response is valid JSON\", function () {",
+                  "  pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "// Validar que sea un array",
+                  "pm.test(\"Response is an array\", function () {",
+                  "  pm.expect(pm.response.json()).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Cancel Reservation",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reservations/{{reservation_id}}/cancel",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reservations",
+                "{{reservation_id}}",
+                "cancel"
+              ]
+            },
+            "description": "Cancela una reserva"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:8000/reservations/1/cancel",
+                  "host": [
+                    "http://localhost:8000"
+                  ],
+                  "path": [
+                    "reservations",
+                    "1",
+                    "cancel"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"user_id\": 1,\n  \"book_id\": 1,\n  \"reservation_date\": \"2024-01-15T10:30:00Z\",\n  \"expiration_date\": \"2024-01-18T10:30:00Z\",\n  \"status\": \"CANCELLED\",\n  \"created_at\": \"2024-01-15T10:30:00Z\",\n  \"updated_at\": \"2024-01-20T10:30:00Z\"\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Validar status code",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Validar response time",
+                  "pm.test(\"Response time is less than 500ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(500);",
+                  "});",
+                  "",
+                  "// Validar que la respuesta sea JSON válido",
+                  "pm.test(\"Response is valid JSON\", function () {",
+                  "  pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "// Validar que el estado sea CANCELLED",
+                  "pm.test(\"Reservation status is CANCELLED\", function () {",
+                  "  pm.expect(pm.response.json().status).to.eql('CANCELLED');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Complete Reservation",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reservations/{{reservation_id}}/complete",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reservations",
+                "{{reservation_id}}",
+                "complete"
+              ]
+            },
+            "description": "Completa una reserva (para futuro flujo de préstamo)"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:8000/reservations/1/complete",
+                  "host": [
+                    "http://localhost:8000"
+                  ],
+                  "path": [
+                    "reservations",
+                    "1",
+                    "complete"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"user_id\": 1,\n  \"book_id\": 1,\n  \"reservation_date\": \"2024-01-15T10:30:00Z\",\n  \"expiration_date\": \"2024-01-18T10:30:00Z\",\n  \"status\": \"COMPLETED\",\n  \"created_at\": \"2024-01-15T10:30:00Z\",\n  \"updated_at\": \"2024-01-20T10:30:00Z\"\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Validar status code",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Validar response time",
+                  "pm.test(\"Response time is less than 500ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(500);",
+                  "});",
+                  "",
+                  "// Validar que la respuesta sea JSON válido",
+                  "pm.test(\"Response is valid JSON\", function () {",
+                  "  pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "// Validar que el estado sea COMPLETED",
+                  "pm.test(\"Reservation status is COMPLETED\", function () {",
+                  "  pm.expect(pm.response.json().status).to.eql('COMPLETED');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Reservation - Not Supported (Negative Test)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reservations/{{reservation_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reservations",
+                "{{reservation_id}}"
+              ]
+            },
+            "description": "Test negativo: intento de eliminación física de reserva (no soportado)"
+          },
+          "response": [
+            {
+              "name": "Expected Error",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:8000/reservations/1",
+                  "host": [
+                    "http://localhost:8000"
+                  ],
+                  "path": [
+                    "reservations",
+                    "1"
+                  ]
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Physical deletion of reservations is not supported. Use PATCH /reservations/{reservation_id}/cancel instead.\"\n}"
             }
           ],
           "event": [

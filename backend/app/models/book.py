@@ -6,6 +6,7 @@ from app.core.database import Base
 
 if TYPE_CHECKING:
     from app.models.loan import Loan
+    from app.models.reservation import Reservation
 
 
 class Book(Base):
@@ -28,6 +29,8 @@ class Book(Base):
     
     # Relación bidireccional con Loan
     loans = relationship("Loan", back_populates="book")
+    # Relación bidireccional con Reservation
+    reservations = relationship("Reservation", back_populates="book")
     
     def __repr__(self):
         return f"<Book(id={self.id}, title='{self.title}')>"
