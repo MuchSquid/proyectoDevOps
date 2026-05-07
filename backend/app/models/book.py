@@ -1,6 +1,11 @@
 from sqlalchemy import Column, Integer, String, Text, DateTime
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
+from typing import TYPE_CHECKING
 from app.core.database import Base
+
+if TYPE_CHECKING:
+    from app.models.loan import Loan
 
 
 class Book(Base):
@@ -17,8 +22,12 @@ class Book(Base):
     publisher = Column(String(255), nullable=True)
     cover_image = Column(String(500), nullable=True)
     category_id = Column(Integer, nullable=True)
+    available_copies = Column(Integer, nullable=False, default=1, index=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    
+    # Relación bidireccional con Loan
+    loans = relationship("Loan", back_populates="book")
     
     def __repr__(self):
         return f"<Book(id={self.id}, title='{self.title}')>"

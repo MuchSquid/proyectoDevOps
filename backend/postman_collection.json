@@ -1297,6 +1297,698 @@
           ]
         }
       ]
+    },
+    {
+      "name": "Loans",
+      "item": [
+        {
+          "name": "Create Loan",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": {{user_id}},\n  \"book_id\": {{book_id}}\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/loans/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "loans",
+                ""
+              ]
+            },
+            "description": "Crea un nuevo préstamo de libro"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"user_id\": 1,\n  \"book_id\": 1\n}"
+                },
+                "url": {
+                  "raw": "http://localhost:8000/loans/",
+                  "host": [
+                    "http://localhost:8000"
+                  ],
+                  "path": [
+                    "loans",
+                    ""
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"user_id\": 1,\n  \"book_id\": 1,\n  \"loan_date\": \"2024-01-15T10:30:00Z\",\n  \"due_date\": \"2024-01-29T10:30:00Z\",\n  \"returned_at\": null,\n  \"status\": \"ACTIVE\",\n  \"created_at\": \"2024-01-15T10:30:00Z\",\n  \"updated_at\": null\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Validar status code",
+                  "pm.test(\"Status code is 201\", function () {",
+                  "  pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "// Validar response time",
+                  "pm.test(\"Response time is less than 500ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(500);",
+                  "});",
+                  "",
+                  "// Validar que la respuesta sea JSON válido",
+                  "pm.test(\"Response is valid JSON\", function () {",
+                  "  pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "// Validar campos principales",
+                  "pm.test(\"Loan has user_id\", function () {",
+                  "  pm.expect(pm.response.json()).to.have.property('user_id');",
+                  "});",
+                  "",
+                  "pm.test(\"Loan has book_id\", function () {",
+                  "  pm.expect(pm.response.json()).to.have.property('book_id');",
+                  "});",
+                  "",
+                  "pm.test(\"Loan has id\", function () {",
+                  "  pm.expect(pm.response.json()).to.have.property('id');",
+                  "});",
+                  "",
+                  "pm.test(\"Loan has status ACTIVE\", function () {",
+                  "  pm.expect(pm.response.json().status).to.eql('ACTIVE');",
+                  "});",
+                  "",
+                  "// Guardar el ID del préstamo en variable de entorno",
+                  "if (pm.response.json().id) {",
+                  "  pm.environment.set(\"loan_id\", pm.response.json().id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get All Loans",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/loans/?skip=0&limit=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "loans",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "skip",
+                  "value": "0"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Obtiene todos los préstamos con paginación"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:8000/loans/?skip=0&limit=10",
+                  "host": [
+                    "http://localhost:8000"
+                  ],
+                  "path": [
+                    "loans",
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "key": "skip",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 1,\n    \"user_id\": 1,\n    \"book_id\": 1,\n    \"loan_date\": \"2024-01-15T10:30:00Z\",\n    \"due_date\": \"2024-01-29T10:30:00Z\",\n    \"returned_at\": null,\n    \"status\": \"ACTIVE\",\n    \"created_at\": \"2024-01-15T10:30:00Z\",\n    \"updated_at\": null\n  }\n]"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Validar status code",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Validar response time",
+                  "pm.test(\"Response time is less than 500ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(500);",
+                  "});",
+                  "",
+                  "// Validar que la respuesta sea JSON válido",
+                  "pm.test(\"Response is valid JSON\", function () {",
+                  "  pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "// Validar que sea un array",
+                  "pm.test(\"Response is an array\", function () {",
+                  "  pm.expect(pm.response.json()).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Loan by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/loans/{{loan_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "loans",
+                "{{loan_id}}"
+              ]
+            },
+            "description": "Obtiene un préstamo específico por su ID"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:8000/loans/1",
+                  "host": [
+                    "http://localhost:8000"
+                  ],
+                  "path": [
+                    "loans",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"user_id\": 1,\n  \"book_id\": 1,\n  \"loan_date\": \"2024-01-15T10:30:00Z\",\n  \"due_date\": \"2024-01-29T10:30:00Z\",\n  \"returned_at\": null,\n  \"status\": \"ACTIVE\",\n  \"created_at\": \"2024-01-15T10:30:00Z\",\n  \"updated_at\": null\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Validar status code",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Validar response time",
+                  "pm.test(\"Response time is less than 500ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(500);",
+                  "});",
+                  "",
+                  "// Validar que la respuesta sea JSON válido",
+                  "pm.test(\"Response is valid JSON\", function () {",
+                  "  pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "// Validar campos principales",
+                  "pm.test(\"Loan has user_id\", function () {",
+                  "  pm.expect(pm.response.json()).to.have.property('user_id');",
+                  "});",
+                  "",
+                  "pm.test(\"Loan has id\", function () {",
+                  "  pm.expect(pm.response.json()).to.have.property('id');",
+                  "});",
+                  "",
+                  "pm.test(\"Loan ID matches requested ID\", function () {",
+                  "  pm.expect(pm.response.json().id.toString()).to.eql(pm.environment.get(\"loan_id\"));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Loans by User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/loans/user/{{user_id}}?skip=0&limit=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "loans",
+                "user",
+                "{{user_id}}"
+              ],
+              "query": [
+                {
+                  "key": "skip",
+                  "value": "0"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Obtiene préstamos de un usuario específico"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:8000/loans/user/1?skip=0&limit=10",
+                  "host": [
+                    "http://localhost:8000"
+                  ],
+                  "path": [
+                    "loans",
+                    "user",
+                    "1"
+                  ],
+                  "query": [
+                    {
+                      "key": "skip",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 1,\n    \"user_id\": 1,\n    \"book_id\": 1,\n    \"loan_date\": \"2024-01-15T10:30:00Z\",\n    \"due_date\": \"2024-01-29T10:30:00Z\",\n    \"returned_at\": null,\n    \"status\": \"ACTIVE\",\n    \"created_at\": \"2024-01-15T10:30:00Z\",\n    \"updated_at\": null\n  }\n]"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Validar status code",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Validar response time",
+                  "pm.test(\"Response time is less than 500ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(500);",
+                  "});",
+                  "",
+                  "// Validar que la respuesta sea JSON válido",
+                  "pm.test(\"Response is valid JSON\", function () {",
+                  "  pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "// Validar que sea un array",
+                  "pm.test(\"Response is an array\", function () {",
+                  "  pm.expect(pm.response.json()).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Return Loan",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/loans/{{loan_id}}/return",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "loans",
+                "{{loan_id}}",
+                "return"
+              ]
+            },
+            "description": "Registra la devolución de un préstamo"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:8000/loans/1/return",
+                  "host": [
+                    "http://localhost:8000"
+                  ],
+                  "path": [
+                    "loans",
+                    "1",
+                    "return"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"user_id\": 1,\n  \"book_id\": 1,\n  \"loan_date\": \"2024-01-15T10:30:00Z\",\n  \"due_date\": \"2024-01-29T10:30:00Z\",\n  \"returned_at\": \"2024-01-20T10:30:00Z\",\n  \"status\": \"RETURNED\",\n  \"created_at\": \"2024-01-15T10:30:00Z\",\n  \"updated_at\": \"2024-01-20T10:30:00Z\"\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Validar status code",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Validar response time",
+                  "pm.test(\"Response time is less than 500ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(500);",
+                  "});",
+                  "",
+                  "// Validar que la respuesta sea JSON válido",
+                  "pm.test(\"Response is valid JSON\", function () {",
+                  "  pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "// Validar que el estado sea RETURNED",
+                  "pm.test(\"Loan status is RETURNED\", function () {",
+                  "  pm.expect(pm.response.json().status).to.eql('RETURNED');",
+                  "});",
+                  "",
+                  "// Validar que returned_at tenga valor",
+                  "pm.test(\"Loan has returned_at\", function () {",
+                  "  pm.expect(pm.response.json()).to.have.property('returned_at');",
+                  "  pm.expect(pm.response.json().returned_at).to.not.be.null;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Cancel Loan",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/loans/{{loan_id}}/cancel",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "loans",
+                "{{loan_id}}",
+                "cancel"
+              ]
+            },
+            "description": "Cancela un préstamo"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:8000/loans/1/cancel",
+                  "host": [
+                    "http://localhost:8000"
+                  ],
+                  "path": [
+                    "loans",
+                    "1",
+                    "cancel"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"user_id\": 1,\n  \"book_id\": 1,\n  \"loan_date\": \"2024-01-15T10:30:00Z\",\n  \"due_date\": \"2024-01-29T10:30:00Z\",\n  \"returned_at\": null,\n  \"status\": \"CANCELLED\",\n  \"created_at\": \"2024-01-15T10:30:00Z\",\n  \"updated_at\": \"2024-01-20T10:30:00Z\"\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Validar status code",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Validar response time",
+                  "pm.test(\"Response time is less than 500ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(500);",
+                  "});",
+                  "",
+                  "// Validar que la respuesta sea JSON válido",
+                  "pm.test(\"Response is valid JSON\", function () {",
+                  "  pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "// Validar que el estado sea CANCELLED",
+                  "pm.test(\"Loan status is CANCELLED\", function () {",
+                  "  pm.expect(pm.response.json().status).to.eql('CANCELLED');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Loan - Not Supported (Negative Test)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/loans/{{loan_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "loans",
+                "{{loan_id}}"
+              ]
+            },
+            "description": "Test negativo: intento de eliminación física de préstamo (no soportado)"
+          },
+          "response": [
+            {
+              "name": "Expected Error",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:8000/loans/1",
+                  "host": [
+                    "http://localhost:8000"
+                  ],
+                  "path": [
+                    "loans",
+                    "1"
+                  ]
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Physical deletion of loans is not supported. Use PATCH /loans/{loan_id}/cancel instead.\"\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Validar status code 405",
+                  "pm.test(\"Status code is 405\", function () {",
+                  "  pm.response.to.have.status(405);",
+                  "});",
+                  "",
+                  "// Validar response time",
+                  "pm.test(\"Response time is less than 500ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(500);",
+                  "});",
+                  "",
+                  "// Validar que la respuesta sea JSON válido",
+                  "pm.test(\"Response is valid JSON\", function () {",
+                  "  pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "// Validar que el error indique usar cancel",
+                  "pm.test(\"Error message mentions cancel\", function () {",
+                  "  pm.expect(pm.response.json().detail).to.include(\"cancel\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }
