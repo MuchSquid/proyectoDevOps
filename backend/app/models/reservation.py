@@ -4,6 +4,7 @@ from sqlalchemy.sql import func, text
 from enum import Enum
 from typing import TYPE_CHECKING
 from app.core.database import Base
+from app.common.mixins.timestamp_mixin import TimestampMixin
 
 if TYPE_CHECKING:
     from app.models.book import Book
@@ -18,7 +19,7 @@ class ReservationStatus(str, Enum):
     EXPIRED = "EXPIRED"
 
 
-class Reservation(Base):
+class Reservation(Base, TimestampMixin):
     """Modelo SQLAlchemy para la entidad Reservation (estilo moderno SQLAlchemy 2.0)."""
     
     __tablename__ = "reservations"
@@ -29,8 +30,6 @@ class Reservation(Base):
     reservation_date: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     expiration_date: Mapped[DateTime] = mapped_column(DateTime(timezone=True), nullable=False, server_default=text("NOW() + INTERVAL '3 days'"))
     status: Mapped[ReservationStatus] = mapped_column(SQLEnum(ReservationStatus), nullable=False, default=ReservationStatus.ACTIVE)
-    created_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now())
-    updated_at: Mapped[DateTime | None] = mapped_column(DateTime(timezone=True), onupdate=func.now())
     
     # Relaciones bidireccionales
     user: Mapped["User"] = relationship("User", back_populates="reservations")

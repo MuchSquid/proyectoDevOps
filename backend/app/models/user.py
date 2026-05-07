@@ -8,6 +8,8 @@ from app.core.database import Base
 if TYPE_CHECKING:
     from app.models.loan import Loan
     from app.models.reservation import Reservation
+    from app.models.fine import Fine
+    from app.models.notification import Notification
 
 
 class UserRole(str, Enum):
@@ -38,6 +40,10 @@ class User(Base):
     loans: Mapped[list["Loan"]] = relationship("Loan", back_populates="user")
     # Relación bidireccional con Reservation
     reservations: Mapped[list["Reservation"]] = relationship("Reservation", back_populates="user")
+    fines: Mapped[list["Fine"]] = relationship("Fine", back_populates="user")
+    notifications: Mapped[list["Notification"]] = relationship(
+        "Notification", back_populates="user"
+    )
     
     def __repr__(self):
         return f"<User(id={self.id}, email='{self.email}', role='{self.role}')>"
