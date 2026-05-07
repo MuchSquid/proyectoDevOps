@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "Biblioteca Backend API",
-    "description": "# Biblioteca Backend API - Postman Collection\n\n## Cómo importar la colección\n\n1. Abre Postman\n2. Haz clic en \"Import\" en la esquina superior izquierda\n3. Selecciona el archivo JSON de esta colección\n4. Haz clic en \"Import\"\n\n## Cómo ejecutar los requests\n\n1. Asegúrate de que el backend esté ejecutándose en `http://localhost:8000`\n2. Ejecuta los requests en el orden recomendado:\n   1. **Create Book** - Crea un nuevo libro y guarda el ID\n   2. **Get All Books** - Lista todos los libros (con paginación)\n   3. **Get Book by ID** - Obtiene el libro creado\n   4. **Update Book** - Actualiza el libro creado\n   5. **Delete Book** - Elimina el libro creado\n\n## Variables de entorno\n\n- `base_url`: URL base del backend (default: http://localhost:8000)\n- `book_id`: ID del libro (se guarda automáticamente después de crear)\n\n## Notas\n\n- No se requiere autenticación\n- Todos los endpoints usan Content-Type: application/json\n- Los tests validan status codes, tiempos de respuesta y estructura de datos",
+    "description": "# Biblioteca Backend API - Postman Collection\n\n## Cómo importar la colección\n\n1. Abre Postman\n2. Haz clic en \"Import\" en la esquina superior izquierda\n3. Selecciona el archivo JSON de esta colección\n4. Haz clic en \"Import\"\n\n## Cómo ejecutar los requests\n\n1. Asegúrate de que el backend esté ejecutándose en `http://localhost:8000`\n2. Ejecuta los requests en el orden recomendado:\n   1. **Create Book** - Crea un nuevo libro y guarda el ID\n   2. **Create User** - Crea un nuevo usuario y guarda el ID\n   3. **Get All Books** - Lista todos los libros (con paginación)\n   4. **Get All Users** - Lista todos los usuarios (con paginación)\n   5. **Get Book by ID** - Obtiene el libro creado\n   6. **Get User by ID** - Obtiene el usuario creado\n   7. **Update Book** - Actualiza el libro creado\n   8. **Update User** - Actualiza el usuario creado\n   9. **Delete Book** - Elimina el libro creado\n   10. **Delete User** - Elimina el usuario creado\n\n## Variables de entorno\n\n- `base_url`: URL base del backend (default: http://localhost:8000)\n- `book_id`: ID del libro (se guarda automáticamente después de crear)\n- `user_id`: ID del usuario (se guarda automáticamente después de crear)\n\n## Validaciones probadas\n\n### Books\n- Paginación (skip >= 0, limit > 0, limit <= 100)\n- Campos requeridos\n- Status codes correctos\n\n### Users\n- Email único\n- University_code único\n- Password hasheado (nunca expuesto en respuestas)\n- Roles válidos (STUDENT, LIBRARIAN, ADMIN)\n- Paginación\n- Campos requeridos\n\n## Notas\n\n- No se requiere autenticación\n- Todos los endpoints usan Content-Type: application/json\n- Los tests validan status codes, tiempos de respuesta y estructura de datos\n- Password_hash nunca se expone en respuestas de User",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -12,6 +12,11 @@
     },
     {
       "key": "book_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "user_id",
       "value": "",
       "type": "string"
     }
@@ -499,6 +504,792 @@
                   "// Validar que no haya cuerpo en la respuesta",
                   "pm.test(\"Response has no body\", function () {",
                   "  pm.expect(pm.response.text()).to.eql('');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"first_name\": \"Gussephe\",\n  \"last_name\": \"Benjamin\",\n  \"email\": \"gussephe@example.com\",\n  \"password\": \"SecurePassword123\",\n  \"university_code\": \"202210484\",\n  \"phone\": \"999888777\",\n  \"role\": \"STUDENT\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                ""
+              ]
+            },
+            "description": "Crea un nuevo usuario en el sistema"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"first_name\": \"Gussephe\",\n  \"last_name\": \"Benjamin\",\n  \"email\": \"gussephe@example.com\",\n  \"password\": \"SecurePassword123\",\n  \"university_code\": \"202210484\",\n  \"phone\": \"999888777\",\n  \"role\": \"STUDENT\"\n}"
+                },
+                "url": {
+                  "raw": "http://localhost:8000/users/",
+                  "host": [
+                    "http://localhost:8000"
+                  ],
+                  "path": [
+                    "users",
+                    ""
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"first_name\": \"Gussephe\",\n  \"last_name\": \"Benjamin\",\n  \"email\": \"gussephe@example.com\",\n  \"university_code\": \"202210484\",\n  \"phone\": \"999888777\",\n  \"role\": \"STUDENT\",\n  \"is_active\": true,\n  \"created_at\": \"2024-01-15T10:30:00Z\",\n  \"updated_at\": null\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Validar status code",
+                  "pm.test(\"Status code is 201\", function () {",
+                  "  pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "// Validar response time",
+                  "pm.test(\"Response time is less than 500ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(500);",
+                  "});",
+                  "",
+                  "// Validar que la respuesta sea JSON válido",
+                  "pm.test(\"Response is valid JSON\", function () {",
+                  "  pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "// Validar campos principales",
+                  "pm.test(\"User has email\", function () {",
+                  "  pm.expect(pm.response.json()).to.have.property('email');",
+                  "});",
+                  "",
+                  "pm.test(\"User has id\", function () {",
+                  "  pm.expect(pm.response.json()).to.have.property('id');",
+                  "});",
+                  "",
+                  "pm.test(\"User has created_at\", function () {",
+                  "  pm.expect(pm.response.json()).to.have.property('created_at');",
+                  "});",
+                  "",
+                  "// Validar que password_hash NO esté expuesto",
+                  "pm.test(\"password_hash is NOT exposed\", function () {",
+                  "  pm.expect(pm.response.json()).to.not.have.property('password_hash');",
+                  "});",
+                  "",
+                  "// Guardar el ID del usuario en variable de entorno",
+                  "if (pm.response.json().id) {",
+                  "  pm.environment.set(\"user_id\", pm.response.json().id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/?skip=0&limit=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "skip",
+                  "value": "0"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Obtiene todos los usuarios con paginación"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:8000/users/?skip=0&limit=10",
+                  "host": [
+                    "http://localhost:8000"
+                  ],
+                  "path": [
+                    "users",
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "key": "skip",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 1,\n    \"first_name\": \"Gussephe\",\n    \"last_name\": \"Benjamin\",\n    \"email\": \"gussephe@example.com\",\n    \"university_code\": \"202210484\",\n    \"phone\": \"999888777\",\n    \"role\": \"STUDENT\",\n    \"is_active\": true,\n    \"created_at\": \"2024-01-15T10:30:00Z\",\n    \"updated_at\": null\n  }\n]"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Validar status code",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Validar response time",
+                  "pm.test(\"Response time is less than 500ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(500);",
+                  "});",
+                  "",
+                  "// Validar que la respuesta sea JSON válido",
+                  "pm.test(\"Response is valid JSON\", function () {",
+                  "  pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "// Validar que sea un array",
+                  "pm.test(\"Response is an array\", function () {",
+                  "  pm.expect(pm.response.json()).to.be.an('array');",
+                  "});",
+                  "",
+                  "// Validar que ningún usuario tenga password_hash",
+                  "pm.test(\"No password_hash in any user\", function () {",
+                  "  pm.response.json().forEach(function(user) {",
+                  "    pm.expect(user).to.not.have.property('password_hash');",
+                  "  });",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/{{user_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "{{user_id}}"
+              ]
+            },
+            "description": "Obtiene un usuario específico por su ID"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:8000/users/1",
+                  "host": [
+                    "http://localhost:8000"
+                  ],
+                  "path": [
+                    "users",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"first_name\": \"Gussephe\",\n  \"last_name\": \"Benjamin\",\n  \"email\": \"gussephe@example.com\",\n  \"university_code\": \"202210484\",\n  \"phone\": \"999888777\",\n  \"role\": \"STUDENT\",\n  \"is_active\": true,\n  \"created_at\": \"2024-01-15T10:30:00Z\",\n  \"updated_at\": null\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Validar status code",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Validar response time",
+                  "pm.test(\"Response time is less than 500ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(500);",
+                  "});",
+                  "",
+                  "// Validar que la respuesta sea JSON válido",
+                  "pm.test(\"Response is valid JSON\", function () {",
+                  "  pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "// Validar campos principales",
+                  "pm.test(\"User has email\", function () {",
+                  "  pm.expect(pm.response.json()).to.have.property('email');",
+                  "});",
+                  "",
+                  "pm.test(\"User has id\", function () {",
+                  "  pm.expect(pm.response.json()).to.have.property('id');",
+                  "});",
+                  "",
+                  "pm.test(\"User ID matches requested ID\", function () {",
+                  "  pm.expect(pm.response.json().id.toString()).to.eql(pm.environment.get(\"user_id\"));",
+                  "});",
+                  "",
+                  "// Validar que password_hash NO esté expuesto",
+                  "pm.test(\"password_hash is NOT exposed\", function () {",
+                  "  pm.expect(pm.response.json()).to.not.have.property('password_hash');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"first_name\": \"Gussephe\",\n  \"last_name\": \"Benjamin - Updated\",\n  \"phone\": \"777888999\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/{{user_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "{{user_id}}"
+              ]
+            },
+            "description": "Actualiza un usuario existente"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"first_name\": \"Gussephe\",\n  \"last_name\": \"Benjamin - Updated\",\n  \"phone\": \"777888999\"\n}"
+                },
+                "url": {
+                  "raw": "http://localhost:8000/users/1",
+                  "host": [
+                    "http://localhost:8000"
+                  ],
+                  "path": [
+                    "users",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"first_name\": \"Gussephe\",\n  \"last_name\": \"Benjamin - Updated\",\n  \"email\": \"gussephe@example.com\",\n  \"university_code\": \"202210484\",\n  \"phone\": \"777888999\",\n  \"role\": \"STUDENT\",\n  \"is_active\": true,\n  \"created_at\": \"2024-01-15T10:30:00Z\",\n  \"updated_at\": \"2024-01-15T11:00:00Z\"\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Validar status code",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Validar response time",
+                  "pm.test(\"Response time is less than 500ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(500);",
+                  "});",
+                  "",
+                  "// Validar que la respuesta sea JSON válido",
+                  "pm.test(\"Response is valid JSON\", function () {",
+                  "  pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "// Validar campos principales",
+                  "pm.test(\"User has email\", function () {",
+                  "  pm.expect(pm.response.json()).to.have.property('email');",
+                  "});",
+                  "",
+                  "pm.test(\"User has id\", function () {",
+                  "  pm.expect(pm.response.json()).to.have.property('id');",
+                  "});",
+                  "",
+                  "pm.test(\"User has updated_at\", function () {",
+                  "  pm.expect(pm.response.json()).to.have.property('updated_at');",
+                  "});",
+                  "",
+                  "// Validar que password_hash NO esté expuesto",
+                  "pm.test(\"password_hash is NOT exposed\", function () {",
+                  "  pm.expect(pm.response.json()).to.not.have.property('password_hash');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/{{user_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "{{user_id}}"
+              ]
+            },
+            "description": "Elimina un usuario por su ID"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:8000/users/1",
+                  "host": [
+                    "http://localhost:8000"
+                  ],
+                  "path": [
+                    "users",
+                    "1"
+                  ]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "body": ""
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Validar status code",
+                  "pm.test(\"Status code is 204\", function () {",
+                  "  pm.response.to.have.status(204);",
+                  "});",
+                  "",
+                  "// Validar response time",
+                  "pm.test(\"Response time is less than 500ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(500);",
+                  "});",
+                  "",
+                  "// Validar que no haya cuerpo en la respuesta",
+                  "pm.test(\"Response has no body\", function () {",
+                  "  pm.expect(pm.response.text()).to.eql('');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create User - Duplicate Email (Negative Test)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"first_name\": \"Test\",\n  \"last_name\": \"User\",\n  \"email\": \"gussephe@example.com\",\n  \"password\": \"AnotherPassword123\",\n  \"university_code\": \"202299999\",\n  \"role\": \"STUDENT\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                ""
+              ]
+            },
+            "description": "Test negativo: crear usuario con email duplicado"
+          },
+          "response": [
+            {
+              "name": "Expected Error",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"first_name\": \"Test\",\n  \"last_name\": \"User\",\n  \"email\": \"gussephe@example.com\",\n  \"password\": \"AnotherPassword123\",\n  \"university_code\": \"202299999\",\n  \"role\": \"STUDENT\"\n}"
+                },
+                "url": {
+                  "raw": "http://localhost:8000/users/",
+                  "host": [
+                    "http://localhost:8000"
+                  ],
+                  "path": [
+                    "users",
+                    ""
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Email gussephe@example.com ya está registrado\"\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Validar status code 400",
+                  "pm.test(\"Status code is 400\", function () {",
+                  "  pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "// Validar response time",
+                  "pm.test(\"Response time is less than 500ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(500);",
+                  "});",
+                  "",
+                  "// Validar que la respuesta sea JSON válido",
+                  "pm.test(\"Response is valid JSON\", function () {",
+                  "  pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "// Validar que el error mencione email duplicado",
+                  "pm.test(\"Error message mentions email duplication\", function () {",
+                  "  pm.expect(pm.response.json().detail).to.include(\"email\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create User - Duplicate Code (Negative Test)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"first_name\": \"Test\",\n  \"last_name\": \"User\",\n  \"email\": \"test2@example.com\",\n  \"password\": \"AnotherPassword123\",\n  \"university_code\": \"202210484\",\n  \"role\": \"STUDENT\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                ""
+              ]
+            },
+            "description": "Test negativo: crear usuario con código universitario duplicado"
+          },
+          "response": [
+            {
+              "name": "Expected Error",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"first_name\": \"Test\",\n  \"last_name\": \"User\",\n  \"email\": \"test2@example.com\",\n  \"password\": \"AnotherPassword123\",\n  \"university_code\": \"202210484\",\n  \"role\": \"STUDENT\"\n}"
+                },
+                "url": {
+                  "raw": "http://localhost:8000/users/",
+                  "host": [
+                    "http://localhost:8000"
+                  ],
+                  "path": [
+                    "users",
+                    ""
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Código universitario 202210484 ya está registrado\"\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Validar status code 400",
+                  "pm.test(\"Status code is 400\", function () {",
+                  "  pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "// Validar response time",
+                  "pm.test(\"Response time is less than 500ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(500);",
+                  "});",
+                  "",
+                  "// Validar que la respuesta sea JSON válido",
+                  "pm.test(\"Response is valid JSON\", function () {",
+                  "  pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "// Validar que el error mencione código duplicado",
+                  "pm.test(\"Error message mentions code duplication\", function () {",
+                  "  pm.expect(pm.response.json().detail).to.include(\"código\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get User - Invalid ID (Negative Test)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/99999",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "99999"
+              ]
+            },
+            "description": "Test negativo: obtener usuario con ID inexistente"
+          },
+          "response": [
+            {
+              "name": "Expected Error",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:8000/users/99999",
+                  "host": [
+                    "http://localhost:8000"
+                  ],
+                  "path": [
+                    "users",
+                    "99999"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"User with id 99999 not found\"\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Validar status code 404",
+                  "pm.test(\"Status code is 404\", function () {",
+                  "  pm.response.to.have.status(404);",
+                  "});",
+                  "",
+                  "// Validar response time",
+                  "pm.test(\"Response time is less than 500ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(500);",
+                  "});",
+                  "",
+                  "// Validar que la respuesta sea JSON válido",
+                  "pm.test(\"Response is valid JSON\", function () {",
+                  "  pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "// Validar que el error mencione not found",
+                  "pm.test(\"Error message mentions not found\", function () {",
+                  "  pm.expect(pm.response.json().detail).to.include(\"not found\");",
                   "});"
                 ]
               }
