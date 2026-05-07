@@ -1,0 +1,511 @@
+{
+  "info": {
+    "name": "Biblioteca Backend API",
+    "description": "# Biblioteca Backend API - Postman Collection\n\n## Cómo importar la colección\n\n1. Abre Postman\n2. Haz clic en \"Import\" en la esquina superior izquierda\n3. Selecciona el archivo JSON de esta colección\n4. Haz clic en \"Import\"\n\n## Cómo ejecutar los requests\n\n1. Asegúrate de que el backend esté ejecutándose en `http://localhost:8000`\n2. Ejecuta los requests en el orden recomendado:\n   1. **Create Book** - Crea un nuevo libro y guarda el ID\n   2. **Get All Books** - Lista todos los libros (con paginación)\n   3. **Get Book by ID** - Obtiene el libro creado\n   4. **Update Book** - Actualiza el libro creado\n   5. **Delete Book** - Elimina el libro creado\n\n## Variables de entorno\n\n- `base_url`: URL base del backend (default: http://localhost:8000)\n- `book_id`: ID del libro (se guarda automáticamente después de crear)\n\n## Notas\n\n- No se requiere autenticación\n- Todos los endpoints usan Content-Type: application/json\n- Los tests validan status codes, tiempos de respuesta y estructura de datos",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "book_id",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Books",
+      "item": [
+        {
+          "name": "Create Book",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Clean Code\",\n  \"description\": \"A handbook of agile software craftsmanship\",\n  \"publication_year\": 2008,\n  \"language\": \"EN\",\n  \"pages\": 464,\n  \"publisher\": \"Prentice Hall\",\n  \"cover_image\": \"https://example.com/clean-code.jpg\",\n  \"category_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/books/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "books",
+                ""
+              ]
+            },
+            "description": "Crea un nuevo libro en el sistema"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Clean Code\",\n  \"description\": \"A handbook of agile software craftsmanship\",\n  \"publication_year\": 2008,\n  \"language\": \"EN\",\n  \"pages\": 464,\n  \"publisher\": \"Prentice Hall\",\n  \"cover_image\": \"https://example.com/clean-code.jpg\",\n  \"category_id\": 1\n}"
+                },
+                "url": {
+                  "raw": "http://localhost:8000/books/",
+                  "host": [
+                    "http://localhost:8000"
+                  ],
+                  "path": [
+                    "books",
+                    ""
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"title\": \"Clean Code\",\n  \"description\": \"A handbook of agile software craftsmanship\",\n  \"publication_year\": 2008,\n  \"language\": \"EN\",\n  \"pages\": 464,\n  \"publisher\": \"Prentice Hall\",\n  \"cover_image\": \"https://example.com/clean-code.jpg\",\n  \"category_id\": 1,\n  \"created_at\": \"2024-01-15T10:30:00Z\",\n  \"updated_at\": null\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Validar status code",
+                  "pm.test(\"Status code is 201\", function () {",
+                  "  pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "// Validar response time",
+                  "pm.test(\"Response time is less than 500ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(500);",
+                  "});",
+                  "",
+                  "// Validar que la respuesta sea JSON válido",
+                  "pm.test(\"Response is valid JSON\", function () {",
+                  "  pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "// Validar campos principales",
+                  "pm.test(\"Book has title\", function () {",
+                  "  pm.expect(pm.response.json()).to.have.property('title');",
+                  "});",
+                  "",
+                  "pm.test(\"Book has id\", function () {",
+                  "  pm.expect(pm.response.json()).to.have.property('id');",
+                  "});",
+                  "",
+                  "pm.test(\"Book has created_at\", function () {",
+                  "  pm.expect(pm.response.json()).to.have.property('created_at');",
+                  "});",
+                  "",
+                  "// Guardar el ID del libro en variable de entorno",
+                  "if (pm.response.json().id) {",
+                  "  pm.environment.set(\"book_id\", pm.response.json().id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get All Books",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/books/?skip=0&limit=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "books",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "skip",
+                  "value": "0"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Obtiene todos los libros con paginación"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:8000/books/?skip=0&limit=10",
+                  "host": [
+                    "http://localhost:8000"
+                  ],
+                  "path": [
+                    "books",
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "key": "skip",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 1,\n    \"title\": \"Clean Code\",\n    \"description\": \"A handbook of agile software craftsmanship\",\n    \"publication_year\": 2008,\n    \"language\": \"EN\",\n    \"pages\": 464,\n    \"publisher\": \"Prentice Hall\",\n    \"cover_image\": \"https://example.com/clean-code.jpg\",\n    \"category_id\": 1,\n    \"created_at\": \"2024-01-15T10:30:00Z\",\n    \"updated_at\": null\n  }\n]"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Validar status code",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Validar response time",
+                  "pm.test(\"Response time is less than 500ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(500);",
+                  "});",
+                  "",
+                  "// Validar que la respuesta sea JSON válido",
+                  "pm.test(\"Response is valid JSON\", function () {",
+                  "  pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "// Validar que sea un array",
+                  "pm.test(\"Response is an array\", function () {",
+                  "  pm.expect(pm.response.json()).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Book by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/books/{{book_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "books",
+                "{{book_id}}"
+              ]
+            },
+            "description": "Obtiene un libro específico por su ID"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:8000/books/1",
+                  "host": [
+                    "http://localhost:8000"
+                  ],
+                  "path": [
+                    "books",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"title\": \"Clean Code\",\n  \"description\": \"A handbook of agile software craftsmanship\",\n  \"publication_year\": 2008,\n  \"language\": \"EN\",\n  \"pages\": 464,\n  \"publisher\": \"Prentice Hall\",\n  \"cover_image\": \"https://example.com/clean-code.jpg\",\n  \"category_id\": 1,\n  \"created_at\": \"2024-01-15T10:30:00Z\",\n  \"updated_at\": null\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Validar status code",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Validar response time",
+                  "pm.test(\"Response time is less than 500ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(500);",
+                  "});",
+                  "",
+                  "// Validar que la respuesta sea JSON válido",
+                  "pm.test(\"Response is valid JSON\", function () {",
+                  "  pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "// Validar campos principales",
+                  "pm.test(\"Book has title\", function () {",
+                  "  pm.expect(pm.response.json()).to.have.property('title');",
+                  "});",
+                  "",
+                  "pm.test(\"Book has id\", function () {",
+                  "  pm.expect(pm.response.json()).to.have.property('id');",
+                  "});",
+                  "",
+                  "pm.test(\"Book ID matches requested ID\", function () {",
+                  "  pm.expect(pm.response.json().id.toString()).to.eql(pm.environment.get(\"book_id\"));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Book",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Clean Code - Updated Edition\",\n  \"description\": \"A handbook of agile software craftsmanship - Updated\",\n  \"publication_year\": 2009,\n  \"language\": \"EN\",\n  \"pages\": 500,\n  \"publisher\": \"Prentice Hall\",\n  \"cover_image\": \"https://example.com/clean-code-updated.jpg\",\n  \"category_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/books/{{book_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "books",
+                "{{book_id}}"
+              ]
+            },
+            "description": "Actualiza un libro existente"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Clean Code - Updated Edition\",\n  \"description\": \"A handbook of agile software craftsmanship - Updated\",\n  \"publication_year\": 2009,\n  \"language\": \"EN\",\n  \"pages\": 500,\n  \"publisher\": \"Prentice Hall\",\n  \"cover_image\": \"https://example.com/clean-code-updated.jpg\",\n  \"category_id\": 1\n}"
+                },
+                "url": {
+                  "raw": "http://localhost:8000/books/1",
+                  "host": [
+                    "http://localhost:8000"
+                  ],
+                  "path": [
+                    "books",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 1,\n  \"title\": \"Clean Code - Updated Edition\",\n  \"description\": \"A handbook of agile software craftsmanship - Updated\",\n  \"publication_year\": 2009,\n  \"language\": \"EN\",\n  \"pages\": 500,\n  \"publisher\": \"Prentice Hall\",\n  \"cover_image\": \"https://example.com/clean-code-updated.jpg\",\n  \"category_id\": 1,\n  \"created_at\": \"2024-01-15T10:30:00Z\",\n  \"updated_at\": \"2024-01-15T11:00:00Z\"\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Validar status code",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Validar response time",
+                  "pm.test(\"Response time is less than 500ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(500);",
+                  "});",
+                  "",
+                  "// Validar que la respuesta sea JSON válido",
+                  "pm.test(\"Response is valid JSON\", function () {",
+                  "  pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "// Validar campos principales",
+                  "pm.test(\"Book has title\", function () {",
+                  "  pm.expect(pm.response.json()).to.have.property('title');",
+                  "});",
+                  "",
+                  "pm.test(\"Book has id\", function () {",
+                  "  pm.expect(pm.response.json()).to.have.property('id');",
+                  "});",
+                  "",
+                  "pm.test(\"Book has updated_at\", function () {",
+                  "  pm.expect(pm.response.json()).to.have.property('updated_at');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Book",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/books/{{book_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "books",
+                "{{book_id}}"
+              ]
+            },
+            "description": "Elimina un libro por su ID"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:8000/books/1",
+                  "host": [
+                    "http://localhost:8000"
+                  ],
+                  "path": [
+                    "books",
+                    "1"
+                  ]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "body": ""
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Validar status code",
+                  "pm.test(\"Status code is 204\", function () {",
+                  "  pm.response.to.have.status(204);",
+                  "});",
+                  "",
+                  "// Validar response time",
+                  "pm.test(\"Response time is less than 500ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(500);",
+                  "});",
+                  "",
+                  "// Validar que no haya cuerpo en la respuesta",
+                  "pm.test(\"Response has no body\", function () {",
+                  "  pm.expect(pm.response.text()).to.eql('');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
