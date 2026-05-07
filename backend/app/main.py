@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
-from app.routers import book_router, user_router, loan_router, reservation_router
+from app.routers import book_router, user_router, loan_router, reservation_router, fine_router, notification_router
 from app.core.database import engine, Base
 
 
@@ -28,6 +28,8 @@ app.include_router(book_router.router)
 app.include_router(user_router.router)
 app.include_router(loan_router.router)
 app.include_router(reservation_router.router)
+app.include_router(fine_router.router)
+app.include_router(notification_router.router)
 
 @app.get("/")
 def read_root():

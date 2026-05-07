@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "Biblioteca Backend API",
-    "description": "# Biblioteca Backend API - Postman Collection\n\n## Cómo importar la colección\n\n1. Abre Postman\n2. Haz clic en \"Import\" en la esquina superior izquierda\n3. Selecciona el archivo JSON de esta colección\n4. Haz clic en \"Import\"\n\n## Cómo ejecutar los requests\n\n1. Asegúrate de que el backend esté ejecutándose en `http://localhost:8000`\n2. Ejecuta los requests en el orden recomendado:\n   1. **Create Book** - Crea un nuevo libro y guarda el ID\n   2. **Create User** - Crea un nuevo usuario y guarda el ID\n   3. **Get All Books** - Lista todos los libros (con paginación)\n   4. **Get All Users** - Lista todos los usuarios (con paginación)\n   5. **Get Book by ID** - Obtiene el libro creado\n   6. **Get User by ID** - Obtiene el usuario creado\n   7. **Update Book** - Actualiza el libro creado\n   8. **Update User** - Actualiza el usuario creado\n   9. **Delete Book** - Elimina el libro creado\n   10. **Delete User** - Elimina el usuario creado\n\n## Variables de entorno\n\n- `base_url`: URL base del backend (default: http://localhost:8000)\n- `book_id`: ID del libro (se guarda automáticamente después de crear)\n- `user_id`: ID del usuario (se guarda automáticamente después de crear)\n\n## Validaciones probadas\n\n### Books\n- Paginación (skip >= 0, limit > 0, limit <= 100)\n- Campos requeridos\n- Status codes correctos\n\n### Users\n- Email único\n- University_code único\n- Password hasheado (nunca expuesto en respuestas)\n- Roles válidos (STUDENT, LIBRARIAN, ADMIN)\n- Paginación\n- Campos requeridos\n\n## Notas\n\n- No se requiere autenticación\n- Todos los endpoints usan Content-Type: application/json\n- Los tests validan status codes, tiempos de respuesta y estructura de datos\n- Password_hash nunca se expone en respuestas de User",
+    "description": "# Biblioteca Backend API - Postman Collection\n\n## Cómo importar la colección\n\n1. Abre Postman\n2. Haz clic en \"Import\" en la esquina superior izquierda\n3. Selecciona el archivo JSON de esta colección\n4. Haz clic en \"Import\"\n\n## Cómo ejecutar los requests\n\n1. Asegúrate de que el backend esté ejecutándose en `http://localhost:8000`\n2. Ejecuta los requests en el orden recomendado:\n   1. **Create Book** - Crea un nuevo libro y guarda el ID\n   2. **Create User** - Crea un nuevo usuario y guarda el ID\n   3. **Get All Books** - Lista todos los libros (con paginación)\n   4. **Get All Users** - Lista todos los usuarios (con paginación)\n   5. **Get Book by ID** - Obtiene el libro creado\n   6. **Get User by ID** - Obtiene el usuario creado\n   7. **Update Book** - Actualiza el libro creado\n   8. **Update User** - Actualiza el usuario creado\n   9. **Delete Book** - Elimina el libro creado\n   10. **Delete User** - Elimina el usuario creado\n\n## Variables de entorno\n\n- `base_url`: URL base del backend (default: http://localhost:8000)\n- `book_id`: ID del libro (se guarda automáticamente después de crear)\n- `user_id`: ID del usuario (se guarda automáticamente después de crear)\n\n## Validaciones probadas\n\n### Books\n- Paginación (skip >= 0, limit > 0, limit <= 100)\n- Campos requeridos\n- Status codes correctos\n\n### Users\n- Email único\n- University_code único\n- Password hasheado (nunca expuesto en respuestas)\n- Roles válidos (STUDENT, LIBRARIAN, ADMIN)\n- Paginación\n- Campos requeridos\n\n## Notas\n\n- No se requiere autenticación\n- Todos los endpoints usan Content-Type: application/json\n- Los tests validan status codes, tiempos de respuesta y estructura de datos\n- Password_hash nunca se expone en respuestas de User\n\n## Fines / Notifications\n\n- Variables: `loan_id`, `fine_id`, `notification_id`\n- Flujo sugerido multa: **Create Book** → **Create User** → **Create Loan** → **Create Fine** (`user_id` debe coincidir con el préstamo; `amount` > 0).\n- Notificaciones: **Create Notification**; listar no leídas con **Get Unread by User**.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -22,6 +22,21 @@
     },
     {
       "key": "reservation_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "loan_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "fine_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "notification_id",
       "value": "",
       "type": "string"
     }
@@ -2682,6 +2697,269 @@
               }
             }
           ]
+        }
+      ]
+    },
+    {
+      "name": "Fines",
+      "item": [
+        {
+          "name": "Get All Fines",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/fines/?skip=0&limit=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "fines",
+                ""
+              ],
+              "query": [
+                { "key": "skip", "value": "0" },
+                { "key": "limit", "value": "10" }
+              ]
+            },
+            "description": "Lista todas las multas (paginado)"
+          }
+        },
+        {
+          "name": "Get Fines by User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/fines/user/{{user_id}}?skip=0&limit=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "fines",
+                "user",
+                "{{user_id}}"
+              ],
+              "query": [
+                { "key": "skip", "value": "0" },
+                { "key": "limit", "value": "10" }
+              ]
+            },
+            "description": "Multas de un usuario"
+          }
+        },
+        {
+          "name": "Get Fine by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/fines/{{fine_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "fines",
+                "{{fine_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Fine",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": {{user_id}},\n  \"loan_id\": {{loan_id}},\n  \"amount\": \"15.00\",\n  \"reason\": \"Late return (demo)\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/fines/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "fines",
+                ""
+              ]
+            },
+            "description": "Crea multa vinculada a préstamo; user_id debe coincidir con el préstamo. Requiere loan devuelto o copias agotadas según reglas de negocio del servicio (solo préstamo existente y usuario activo)."
+          }
+        },
+        {
+          "name": "Pay Fine",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/fines/{{fine_id}}/pay",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "fines",
+                "{{fine_id}}",
+                "pay"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Cancel Fine",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/fines/{{fine_id}}/cancel",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "fines",
+                "{{fine_id}}",
+                "cancel"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "Get All Notifications",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/notifications/?skip=0&limit=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                ""
+              ],
+              "query": [
+                { "key": "skip", "value": "0" },
+                { "key": "limit", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Notifications by User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/notifications/user/{{user_id}}?skip=0&limit=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                "user",
+                "{{user_id}}"
+              ],
+              "query": [
+                { "key": "skip", "value": "0" },
+                { "key": "limit", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Unread by User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/notifications/user/{{user_id}}/unread?skip=0&limit=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                "user",
+                "{{user_id}}",
+                "unread"
+              ],
+              "query": [
+                { "key": "skip", "value": "0" },
+                { "key": "limit", "value": "10" }
+              ]
+            },
+            "description": "Solo notificaciones no leídas del usuario"
+          }
+        },
+        {
+          "name": "Get Notification by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/notifications/{{notification_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                "{{notification_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": {{user_id}},\n  \"title\": \"Recordatorio\",\n  \"message\": \"Tu préstamo vence pronto\",\n  \"type\": \"LOAN\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/notifications/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Mark Notification Read",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/notifications/{{notification_id}}/read",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                "{{notification_id}}",
+                "read"
+              ]
+            }
+          }
         }
       ]
     }
