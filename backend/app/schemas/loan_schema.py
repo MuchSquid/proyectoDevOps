@@ -12,7 +12,7 @@ class LoanBase(BaseModel):
 
 class LoanCreate(LoanBase):
     """Schema para crear un Loan."""
-    pass
+    due_date: Optional[datetime] = Field(None, description="Fecha de vencimiento (por defecto 14 días)")
 
 
 class LoanUpdate(BaseModel):

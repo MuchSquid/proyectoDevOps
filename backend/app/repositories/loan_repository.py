@@ -37,7 +37,7 @@ class LoanRepository:
     
     def create(self, loan_data: LoanCreate) -> Loan:
         """Crear un nuevo préstamo."""
-        db_loan = Loan(**loan_data.model_dump())
+        db_loan = Loan(**loan_data.model_dump(exclude_none=True))
         self.db.add(db_loan)
         self.db.commit()
         self.db.refresh(db_loan)

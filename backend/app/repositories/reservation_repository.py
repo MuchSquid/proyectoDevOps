@@ -35,7 +35,7 @@ class ReservationRepository:
     
     def create(self, reservation_data: ReservationCreate) -> Reservation:
         """Crear una nueva reserva."""
-        db_reservation = Reservation(**reservation_data.model_dump())
+        db_reservation = Reservation(**reservation_data.model_dump(exclude_none=True))
         self.db.add(db_reservation)
         self.db.commit()
         self.db.refresh(db_reservation)

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Opciones de fuente moderna</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background:
+      radial-gradient(ellipse 75% 55% at 12% 8%, rgba(200,150,60,0.20) 0%, transparent 58%),
+      radial-gradient(ellipse 55% 50% at 88% 88%, rgba(140,75,25,0.16) 0%, transparent 58%),
+      linear-gradient(148deg, #ede3d0 0%, #e3d4b8 55%, #d8c8a2 100%);
+    min-height: 100vh;
+    padding: 1.75rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .glass {
+    background: rgba(255, 249, 238, 0.62);
+    backdrop-filter: blur(52px) saturate(180%) brightness(105%);
+    -webkit-backdrop-filter: blur(52px) saturate(180%) brightness(105%);
+    border: 1px solid rgba(205, 165, 95, 0.38);
+    border-radius: 20px;
+    box-shadow: 0 10px 44px rgba(70,35,8,0.13), 0 2px 0 rgba(255,255,255,0.88) inset;
+  }
+  .glass-d {
+    background: rgba(30, 14, 4, 0.84);
+    backdrop-filter: blur(56px) saturate(155%);
+    -webkit-backdrop-filter: blur(56px) saturate(155%);
+    border: 1px solid rgba(200, 160, 80, 0.20);
+    border-radius: 20px;
+    box-shadow: 0 10px 44px rgba(0,0,0,0.28), 0 1.5px 0 rgba(255,255,255,0.06) inset;
+  }
+
+  .label-top {
+    text-align: center;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: #a07045;
+    letter-spacing: 0.01em;
+  }
+
+  .options-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    max-width: 980px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .option-card {
+    border-radius: 20px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 2px solid transparent;
+  }
+  .option-card:hover {
+    transform: translateY(-4px);
+  }
+  .option-card.selected {
+    border-color: rgba(160, 100, 30, 0.6);
+  }
+
+  /* mini app preview inside each card */
+  .preview {
+    padding: 1rem;
+    display: flex;
+    gap: 0.6rem;
+    height: 280px;
+  }
+
+  .mini-sidebar {
+    width: 110px;
+    padding: 0.7rem 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex-shrink: 0;
+    border-radius: 14px;
+    background: rgba(30, 14, 4, 0.82);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 1px solid rgba(200,160,80,0.18);
+  }
+  .mini-brand-name { font-size: 0.75rem; font-weight: 700; color: #ebd698; line-height: 1.1; margin-bottom: 0.5rem; padding: 0 0.3rem 0.5rem; border-bottom: 1px solid rgba(200,160,80,0.15); }
+  .mini-nav { padding: 0.3rem 0.4rem; border-radius: 8px; font-size: 0.58rem; font-weight: 500; color: rgba(225,195,130,0.60); }
+  .mini-nav.active { background: rgba(200,140,55,0.22); color: #f0cc78; border: 1px solid rgba(200,140,55,0.28); }
+
+  .mini-main {
+    flex: 1;
+    padding: 0.8rem 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .mini-title  { font-size: 1.05rem; font-weight: 800; color: #261206; line-height: 1.1; }
+  .mini-sub    { font-size: 0.58rem; font-weight: 400; color: #a07045; }
+  .mini-btn    { display: inline-flex; align-items: center; padding: 0.28rem 0.65rem; background: linear-gradient(145deg,#a05018,#7a3410); color: rgba(255,238,210,.95); border-radius: 8px; font-size: 0.6rem; font-weight: 600; border: none; cursor: pointer; box-shadow: 0 3px 10px rgba(100,38,8,.28); }
+
+  .mini-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem; }
+  .mini-stat  {
+    padding: 0.4rem 0.5rem;
+    border-radius: 10px;
+    background: rgba(255,249,238,0.55);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid rgba(205,165,95,0.32);
+  }
+  .mini-stat-label { font-size: 0.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: #a07045; }
+  .mini-stat-val   { font-size: 1.1rem; font-weight: 800; color: #261206; line-height: 1; }
+
+  .mini-book {
+    padding: 0.45rem 0.55rem;
+    border-radius: 10px;
+    background: rgba(255,249,238,0.55);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid rgba(205,165,95,0.32);
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+  }
+  .mini-book-cover { width: 22px; height: 28px; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; flex-shrink: 0; }
+  .mini-book-title  { font-size: 0.58rem; font-weight: 700; color: #261206; line-height: 1.2; }
+  .mini-book-author { font-size: 0.5rem; font-weight: 400; color: #a07045; }
+  .mini-badge { font-size: 0.48rem; font-weight: 600; padding: 0.1rem 0.35rem; border-radius: 999px; background: rgba(30,120,58,0.13); color: #1a7030; border: 1px solid rgba(30,120,58,0.22); }
+
+  /* card footer */
+  .card-footer { padding: 0.85rem 1.1rem; border-top: 1px solid rgba(205,165,95,0.22); }
+  .font-name { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #a07045; margin-bottom: 0.3rem; font-family: 'Plus Jakarta Sans', sans-serif; }
+  .font-desc { font-size: 0.72rem; font-weight: 400; color: #5a3010; line-height: 1.5; font-family: 'Plus Jakarta Sans', sans-serif; }
+
+  /* OPCIÓN A — Plus Jakarta Sans */
+  .f-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+  /* OPCIÓN B — Outfit */
+  .f-outfit { font-family: 'Outfit', sans-serif; }
+
+  /* OPCIÓN C — DM Sans */
+  .f-dm { font-family: 'DM Sans', sans-serif; }
+</style>
+</head>
+<body>
+
+<div class="label-top">
+  ¿Cuál tipografía se siente más <em>biblioteca moderna</em>? — Misma paleta y glassmorphism, solo cambia la fuente
+</div>
+
+<div class="options-grid">
+
+  <!-- A: Plus Jakarta Sans -->
+  <div class="option-card glass" onclick="this.classList.toggle('selected')">
+    <div class="preview">
+      <div class="mini-sidebar">
+        <div class="mini-brand-name f-jakarta" style="letter-spacing:-0.01em;">📚 BiblioSys</div>
+        <div class="mini-nav active f-jakarta">📖 Libros</div>
+        <div class="mini-nav f-jakarta">👤 Usuarios</div>
+        <div class="mini-nav f-jakarta">📋 Préstamos</div>
+        <div class="mini-nav f-jakarta">🔖 Reservas</div>
+      </div>
+      <div class="mini-main glass">
+        <div>
+          <div class="mini-title f-jakarta" style="letter-spacing:-0.03em;">Catálogo<br>de Libros</div>
+          <div class="mini-sub f-jakarta">142 libros disponibles</div>
+        </div>
+        <div class="mini-stats">
+          <div class="mini-stat">
+            <div class="mini-stat-label f-jakarta">Total</div>
+            <div class="mini-stat-val f-jakarta" style="letter-spacing:-0.03em;">142</div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-label f-jakarta">Activos</div>
+            <div class="mini-stat-val f-jakarta" style="letter-spacing:-0.03em;">98</div>
+          </div>
+        </div>
+        <div class="mini-book glass">
+          <div class="mini-book-cover" style="background:linear-gradient(135deg,#8b2020,#bf3a28);">📕</div>
+          <div>
+            <div class="mini-book-title f-jakarta">Don Quijote de la Mancha</div>
+            <div class="mini-book-author f-jakarta">Cervantes · 1605</div>
+            <div class="mini-badge f-jakarta" style="margin-top:0.15rem;display:inline-block;">3 disponibles</div>
+          </div>
+        </div>
+        <div class="mini-book glass">
+          <div class="mini-book-cover" style="background:linear-gradient(135deg,#1a5c3a,#2e7a50);">📗</div>
+          <div>
+            <div class="mini-book-title f-jakarta">Cien Años de Soledad</div>
+            <div class="mini-book-author f-jakarta">García Márquez · 1967</div>
+            <div class="mini-badge f-jakarta" style="margin-top:0.15rem;display:inline-block;background:rgba(160,75,15,.12);color:#904010;border-color:rgba(160,75,15,.22);">Reservado</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="font-name">A — Plus Jakarta Sans</div>
+      <div class="font-desc">Humanista moderna, cálida. La usan Notion, Linear, startups de diseño. Muy equilibrada entre amigable y profesional.</div>
+    </div>
+  </div>
+
+  <!-- B: Outfit -->
+  <div class="option-card glass" onclick="this.classList.toggle('selected')">
+    <div class="preview">
+      <div class="mini-sidebar">
+        <div class="mini-brand-name f-outfit" style="letter-spacing:-0.02em;">📚 BiblioSys</div>
+        <div class="mini-nav active f-outfit">📖 Libros</div>
+        <div class="mini-nav f-outfit">👤 Usuarios</div>
+        <div class="mini-nav f-outfit">📋 Préstamos</div>
+        <div class="mini-nav f-outfit">🔖 Reservas</div>
+      </div>
+      <div class="mini-main glass">
+        <div>
+          <div class="mini-title f-outfit" style="letter-spacing:-0.04em;">Catálogo<br>de Libros</div>
+          <div class="mini-sub f-outfit">142 libros disponibles</div>
+        </div>
+        <div class="mini-stats">
+          <div class="mini-stat">
+            <div class="mini-stat-label f-outfit">Total</div>
+            <div class="mini-stat-val f-outfit" style="letter-spacing:-0.04em;">142</div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-label f-outfit">Activos</div>
+            <div class="mini-stat-val f-outfit" style="letter-spacing:-0.04em;">98</div>
+          </div>
+        </div>
+        <div class="mini-book glass">
+          <div class="mini-book-cover" style="background:linear-gradient(135deg,#8b2020,#bf3a28);">📕</div>
+          <div>
+            <div class="mini-book-title f-outfit">Don Quijote de la Mancha</div>
+            <div class="mini-book-author f-outfit">Cervantes · 1605</div>
+            <div class="mini-badge f-outfit" style="margin-top:0.15rem;display:inline-block;">3 disponibles</div>
+          </div>
+        </div>
+        <div class="mini-book glass">
+          <div class="mini-book-cover" style="background:linear-gradient(135deg,#1a5c3a,#2e7a50);">📗</div>
+          <div>
+            <div class="mini-book-title f-outfit">Cien Años de Soledad</div>
+            <div class="mini-book-author f-outfit">García Márquez · 1967</div>
+            <div class="mini-badge f-outfit" style="margin-top:0.15rem;display:inline-block;background:rgba(160,75,15,.12);color:#904010;border-color:rgba(160,75,15,.22);">Reservado</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="font-name">B — Outfit</div>
+      <div class="font-desc">Geométrica limpia, números perfectos. Estilo institución cultural moderna, museo, biblioteca pública contemporánea.</div>
+    </div>
+  </div>
+
+  <!-- C: DM Sans -->
+  <div class="option-card glass" onclick="this.classList.toggle('selected')">
+    <div class="preview">
+      <div class="mini-sidebar">
+        <div class="mini-brand-name f-dm" style="letter-spacing:-0.01em;">📚 BiblioSys</div>
+        <div class="mini-nav active f-dm">📖 Libros</div>
+        <div class="mini-nav f-dm">👤 Usuarios</div>
+        <div class="mini-nav f-dm">📋 Préstamos</div>
+        <div class="mini-nav f-dm">🔖 Reservas</div>
+      </div>
+      <div class="mini-main glass">
+        <div>
+          <div class="mini-title f-dm" style="letter-spacing:-0.03em;">Catálogo<br>de Libros</div>
+          <div class="mini-sub f-dm">142 libros disponibles</div>
+        </div>
+        <div class="mini-stats">
+          <div class="mini-stat">
+            <div class="mini-stat-label f-dm">Total</div>
+            <div class="mini-stat-val f-dm" style="letter-spacing:-0.03em;">142</div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-label f-dm">Activos</div>
+            <div class="mini-stat-val f-dm" style="letter-spacing:-0.03em;">98</div>
+          </div>
+        </div>
+        <div class="mini-book glass">
+          <div class="mini-book-cover" style="background:linear-gradient(135deg,#8b2020,#bf3a28);">📕</div>
+          <div>
+            <div class="mini-book-title f-dm">Don Quijote de la Mancha</div>
+            <div class="mini-book-author f-dm">Cervantes · 1605</div>
+            <div class="mini-badge f-dm" style="margin-top:0.15rem;display:inline-block;">3 disponibles</div>
+          </div>
+        </div>
+        <div class="mini-book glass">
+          <div class="mini-book-cover" style="background:linear-gradient(135deg,#1a5c3a,#2e7a50);">📗</div>
+          <div>
+            <div class="mini-book-title f-dm">Cien Años de Soledad</div>
+            <div class="mini-book-author f-dm">García Márquez · 1967</div>
+            <div class="mini-badge f-dm" style="margin-top:0.15rem;display:inline-block;background:rgba(160,75,15,.12);color:#904010;border-color:rgba(160,75,15,.22);">Reservado</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="font-name">C — DM Sans</div>
+      <div class="font-desc">Óptica variable, ultra legible. La familia DM es la favorita de Google para apps de alta calidad. Neutral pero con carácter.</div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

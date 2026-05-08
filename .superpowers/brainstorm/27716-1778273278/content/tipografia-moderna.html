@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BiblioSys — Tipografía Serif Moderna</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,300;1,9..144,400&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cormorant+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --f-display: 'Fraunces', Georgia, serif;
+    --f-body:    'Lora', Georgia, serif;
+    --f-caps:    'Cormorant SC', Georgia, serif;
+
+    --cream:     #f0e6d4;
+    --text:      #261206;
+    --text-mid:  #6b3f20;
+    --text-soft: #a87048;
+    --gold:      #c08840;
+    --glass:     rgba(255, 249, 238, 0.58);
+    --glass-s:   rgba(255, 250, 240, 0.78);
+    --glass-d:   rgba(30, 14, 4, 0.84);
+    --border:    rgba(200, 160, 90, 0.36);
+    --border-d:  rgba(200, 160, 80, 0.20);
+    --shadow:    0 10px 44px rgba(70,35,8,0.14), 0 2px 0 rgba(255,255,255,0.88) inset;
+    --shadow-d:  0 10px 44px rgba(0,0,0,0.28), 0 1.5px 0 rgba(255,255,255,0.06) inset;
+  }
+
+  body {
+    font-family: var(--f-body);
+    background:
+      radial-gradient(ellipse 75% 55% at 12% 8%,  rgba(200,150,60,0.20) 0%, transparent 58%),
+      radial-gradient(ellipse 55% 50% at 88% 88%,  rgba(140,75,25,0.16) 0%, transparent 58%),
+      radial-gradient(ellipse 45% 38% at 58% 38%,  rgba(230,190,120,0.10) 0%, transparent 48%),
+      linear-gradient(148deg, #ede3d0 0%, #e3d4b8 55%, #d8c8a2 100%);
+    min-height: 100vh;
+    padding: 1.5rem 2rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .glass   { background:var(--glass);   backdrop-filter:blur(52px) saturate(180%) brightness(104%); -webkit-backdrop-filter:blur(52px) saturate(180%) brightness(104%); border:1px solid var(--border);   border-radius:20px; box-shadow:var(--shadow); }
+  .glass-s { background:var(--glass-s); backdrop-filter:blur(64px) saturate(200%) brightness(107%); -webkit-backdrop-filter:blur(64px) saturate(200%) brightness(107%); border:1px solid rgba(215,175,110,0.52); border-radius:20px; box-shadow:var(--shadow); }
+  .glass-d { background:var(--glass-d); backdrop-filter:blur(56px) saturate(155%);                  -webkit-backdrop-filter:blur(56px) saturate(155%);                  border:1px solid var(--border-d); border-radius:20px; box-shadow:var(--shadow-d); }
+
+  .app-frame { display:flex; gap:1rem; height:560px; max-width:980px; margin:0 auto; width:100%; }
+
+  /* ── SIDEBAR ── */
+  .sidebar { width:215px; padding:1.25rem 0.75rem; display:flex; flex-direction:column; gap:0.3rem; flex-shrink:0; }
+
+  .brand { display:flex; align-items:center; gap:0.7rem; padding:0.4rem 0.5rem 1rem; border-bottom:1px solid var(--border-d); margin-bottom:0.6rem; }
+  .brand-icon {
+    width:36px; height:36px;
+    background: linear-gradient(145deg,#d4935a,#8b4010);
+    border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.05rem;
+    box-shadow: 0 4px 14px rgba(0,0,0,.36), 0 1px 0 rgba(255,255,255,.18) inset;
+  }
+  .brand-name { font-family:var(--f-display); font-size:1.05rem; font-weight:700; color:#edd8a0; line-height:1.15; letter-spacing:-0.01em; }
+  .brand-sub  { font-family:var(--f-caps);    font-size:0.58rem; font-weight:500; color:rgba(210,170,90,.45); letter-spacing:0.06em; }
+
+  .nav-section { font-family:var(--f-caps); font-size:0.6rem; font-weight:500; letter-spacing:0.12em; color:rgba(210,170,80,.38); padding:0.5rem 0.5rem 0.25rem; }
+
+  .nav-item { display:flex; align-items:center; gap:0.65rem; padding:0.55rem 0.75rem; border-radius:12px; font-family:var(--f-body); font-size:0.82rem; font-weight:500; color:rgba(225,195,135,.65); cursor:pointer; transition:all .18s ease; }
+  .nav-item.active {
+    background: rgba(200,140,60,.22);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    color: #f0cc78;
+    border: 1px solid rgba(200,140,60,.30);
+    box-shadow: 0 2px 10px rgba(0,0,0,.18), 0 1px 0 rgba(255,255,255,.08) inset;
+  }
+  .nav-item:not(.active):hover { background:rgba(205,160,70,.10); color:rgba(225,195,135,.92); }
+  .nav-icon { font-size:.9rem; width:1.1rem; text-align:center; }
+
+  .sidebar-footer { margin-top:auto; padding:.85rem .5rem 0; border-top:1px solid var(--border-d); font-family:var(--f-caps); font-size:.6rem; font-weight:400; color:rgba(210,170,80,.32); letter-spacing:.05em; }
+
+  /* ── MAIN ── */
+  .main { flex:1; padding:1.5rem 1.6rem; display:flex; flex-direction:column; gap:1.1rem; overflow:hidden; min-width:0; }
+
+  .page-title { font-family:var(--f-display); font-size:1.75rem; font-weight:700; color:var(--text); letter-spacing:-.035em; line-height:1.1; font-variant-numeric:oldstyle-nums; }
+  .page-sub   { font-family:var(--f-body);    font-size:.78rem;  font-weight:400; color:var(--text-soft); margin-top:.2rem; font-style:italic; }
+
+  .btn-add {
+    background: linear-gradient(145deg,#a05018,#7a3410);
+    color: rgba(255,238,210,.95);
+    border:none; border-radius:12px; padding:.6rem 1.15rem;
+    font-family:var(--f-body); font-size:.8rem; font-weight:600; font-style:normal;
+    cursor:pointer; display:flex; align-items:center; gap:.4rem;
+    box-shadow: 0 5px 18px rgba(100,38,8,.32), 0 1px 0 rgba(255,255,255,.14) inset;
+  }
+
+  .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:.7rem; }
+  .stat { padding:.9rem 1rem; display:flex; flex-direction:column; gap:.2rem; }
+  .stat-icon  { font-size:1.1rem; margin-bottom:.12rem; }
+  .stat-label { font-family:var(--f-caps);    font-size:.62rem; font-weight:500; letter-spacing:.08em; color:var(--text-soft); }
+  .stat-value { font-family:var(--f-display); font-size:1.8rem; font-weight:700; color:var(--text); line-height:1; letter-spacing:-.035em; font-variant-numeric:oldstyle-nums; }
+
+  .search-wrap { position:relative; }
+  .search-icon { position:absolute; left:.9rem; top:50%; transform:translateY(-50%); font-size:.82rem; color:var(--text-soft); pointer-events:none; }
+  .search-bar {
+    width:100%; background:rgba(255,249,235,.60);
+    backdrop-filter:blur(42px) saturate(160%); -webkit-backdrop-filter:blur(42px) saturate(160%);
+    border:1px solid rgba(205,165,100,.38); border-radius:12px;
+    padding:.6rem .9rem .6rem 2.4rem;
+    font-family:var(--f-body); font-size:.82rem; font-weight:400; font-style:italic;
+    color:var(--text); outline:none;
+    box-shadow:0 2px 10px rgba(100,55,15,.07), 0 1.5px 0 rgba(255,255,255,.88) inset;
+  }
+  .search-bar::placeholder { color:var(--text-soft); }
+
+  .books-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:.85rem; overflow-y:auto; padding-right:2px; }
+  .book-card { border-radius:16px; overflow:hidden; cursor:pointer; transition:transform .22s cubic-bezier(.25,.46,.45,.94), box-shadow .22s ease; }
+  .book-card:hover { transform:translateY(-4px) scale(1.01); box-shadow:0 18px 50px rgba(70,32,8,.22), 0 2px 0 rgba(255,255,255,.92) inset !important; }
+  .book-cover { height:80px; display:flex; align-items:center; justify-content:center; font-size:2rem; position:relative; }
+  .book-cover::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg,rgba(255,255,255,.10) 0%,transparent 65%); pointer-events:none; }
+  .book-body { padding:.7rem .85rem .8rem; }
+  .book-title  { font-family:var(--f-display); font-size:.8rem; font-weight:700; color:var(--text); line-height:1.3; letter-spacing:-.015em; }
+  .book-author { font-family:var(--f-body);    font-size:.63rem; font-weight:400; font-style:italic; color:var(--text-soft); margin-top:.18rem; }
+  .badge { display:inline-block; margin-top:.42rem; font-family:var(--f-caps); font-size:.58rem; font-weight:500; letter-spacing:.04em; padding:.18rem .55rem; border-radius:999px; }
+  .badge-ok  { background:rgba(30,128,58,.13);  color:#1a7030; border:1px solid rgba(30,128,58,.22); }
+  .badge-rsv { background:rgba(160,75,15,.12);  color:#904010; border:1px solid rgba(160,75,15,.22); }
+
+  ::-webkit-scrollbar { width:5px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  ::-webkit-scrollbar-thumb { background:rgba(175,120,60,.28); border-radius:3px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER PREVIEW -->
+<div style="text-align:center;max-width:980px;margin:0 auto 0.2rem;">
+  <div style="font-family:'Fraunces',Georgia,serif;font-size:1.05rem;font-weight:700;color:#5a3010;opacity:.55;letter-spacing:-.02em;">Vista previa — Tipografía Serif Moderna · Glassmorphism Apple</div>
+  <div style="font-family:'Lora',Georgia,serif;font-size:.72rem;font-style:italic;color:#a07045;margin-top:.15rem;">Fraunces (display) · Lora (body & UI) · Cormorant SC (labels/caps)</div>
+</div>
+
+<div class="app-frame">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar glass-d">
+    <div class="brand">
+      <div class="brand-icon">📚</div>
+      <div>
+        <div class="brand-name">BiblioSys</div>
+        <div class="brand-sub">Sistema de Reservas</div>
+      </div>
+    </div>
+
+    <div class="nav-section">Módulos</div>
+    <div class="nav-item active"><span class="nav-icon">📖</span> Libros</div>
+    <div class="nav-item"><span class="nav-icon">👤</span> Usuarios</div>
+    <div class="nav-item"><span class="nav-icon">📋</span> Préstamos</div>
+    <div class="nav-item"><span class="nav-icon">🔖</span> Reservas</div>
+    <div class="nav-item"><span class="nav-icon">💰</span> Multas</div>
+    <div class="nav-item"><span class="nav-icon">🔔</span> Notificaciones</div>
+
+    <div class="sidebar-footer">API · localhost:8000</div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main glass-s">
+
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+      <div>
+        <div class="page-title">📖 Catálogo de Libros</div>
+        <div class="page-sub">142 libros en colección · 98 disponibles hoy</div>
+      </div>
+      <button class="btn-add">＋ Agregar libro</button>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat glass"><div class="stat-icon">📚</div><div class="stat-label">Total</div><div class="stat-value">142</div></div>
+      <div class="stat glass"><div class="stat-icon">✅</div><div class="stat-label">Disponibles</div><div class="stat-value">98</div></div>
+      <div class="stat glass"><div class="stat-icon">🔖</div><div class="stat-label">Prestados</div><div class="stat-value">32</div></div>
+      <div class="stat glass"><div class="stat-icon">⏰</div><div class="stat-label">Vencidos</div><div class="stat-value" style="color:#b83a10;">12</div></div>
+    </div>
+
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-bar" placeholder="Buscar por título, autor o editorial…" />
+    </div>
+
+    <div class="books-grid">
+      <div class="book-card glass">
+        <div class="book-cover" style="background:linear-gradient(135deg,#8b2020,#bf3a28);">📕</div>
+        <div class="book-body">
+          <div class="book-title">Don Quijote de la Mancha</div>
+          <div class="book-author">Miguel de Cervantes, 1605</div>
+          <span class="badge badge-ok">3 disponibles</span>
+        </div>
+      </div>
+      <div class="book-card glass">
+        <div class="book-cover" style="background:linear-gradient(135deg,#1a5c3a,#2e7a50);">📗</div>
+        <div class="book-body">
+          <div class="book-title">Cien Años de Soledad</div>
+          <div class="book-author">Gabriel García Márquez, 1967</div>
+          <span class="badge badge-rsv">Reservado</span>
+        </div>
+      </div>
+      <div class="book-card glass">
+        <div class="book-cover" style="background:linear-gradient(135deg,#1a2d5c,#2d4a90);">📘</div>
+        <div class="book-body">
+          <div class="book-title">El Principito</div>
+          <div class="book-author">Antoine de Saint-Exupéry, 1943</div>
+          <span class="badge badge-ok">1 disponible</span>
+        </div>
+      </div>
+      <div class="book-card glass">
+        <div class="book-cover" style="background:linear-gradient(135deg,#5c3a1a,#8a5828);">📙</div>
+        <div class="book-body">
+          <div class="book-title">Rayuela</div>
+          <div class="book-author">Julio Cortázar, 1963</div>
+          <span class="badge badge-ok">2 disponibles</span>
+        </div>
+      </div>
+      <div class="book-card glass">
+        <div class="book-cover" style="background:linear-gradient(135deg,#4a1a5c,#7a2d8a);">📓</div>
+        <div class="book-body">
+          <div class="book-title">La Casa de los Espíritus</div>
+          <div class="book-author">Isabel Allende, 1982</div>
+          <span class="badge badge-rsv">Reservado</span>
+        </div>
+      </div>
+      <div class="book-card glass">
+        <div class="book-cover" style="background:linear-gradient(135deg,#5c1a1a,#8a2828);">📔</div>
+        <div class="book-body">
+          <div class="book-title">Ficciones</div>
+          <div class="book-author">Jorge Luis Borges, 1944</div>
+          <span class="badge badge-ok">4 disponibles</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SISTEMA DE FUENTES -->
+<div style="max-width:980px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;">
+  <div class="glass" style="padding:.9rem 1.1rem;">
+    <div style="font-family:'Cormorant SC',serif;font-size:.6rem;font-weight:500;letter-spacing:.1em;color:#a07045;margin-bottom:.55rem;">Fraunces — Display</div>
+    <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:700;color:#261206;line-height:1.1;letter-spacing:-.03em;">Catálogo<br><span style="font-weight:300;font-style:italic;font-size:1rem;opacity:.6;">de libros</span></div>
+    <div style="font-family:'Lora',serif;font-size:.65rem;font-style:italic;color:#a07045;margin-top:.4rem;">Títulos de página, headings grandes</div>
+  </div>
+  <div class="glass" style="padding:.9rem 1.1rem;">
+    <div style="font-family:'Cormorant SC',serif;font-size:.6rem;font-weight:500;letter-spacing:.1em;color:#a07045;margin-bottom:.55rem;">Lora — Body & UI</div>
+    <div style="font-family:'Lora',serif;font-size:.92rem;font-weight:600;color:#261206;line-height:1.4;">Sistema de Reservas</div>
+    <div style="font-family:'Lora',serif;font-size:.8rem;font-weight:400;font-style:italic;color:#6b3f20;margin-top:.25rem;">Botones, labels, datos de tabla,<br>texto de navegación lateral.</div>
+    <div style="font-family:'Lora',serif;font-size:.65rem;font-weight:400;font-style:italic;color:#a07045;margin-top:.35rem;">Serif legible a tamaños pequeños</div>
+  </div>
+  <div class="glass" style="padding:.9rem 1.1rem;">
+    <div style="font-family:'Cormorant SC',serif;font-size:.6rem;font-weight:500;letter-spacing:.1em;color:#a07045;margin-bottom:.55rem;">Cormorant SC — Caps & Labels</div>
+    <div style="font-family:'Cormorant SC',serif;font-size:.8rem;font-weight:600;letter-spacing:.1em;color:#6b3f20;line-height:1.8;">
+      Módulos<br>
+      Total · Disponibles<br>
+      Estado · Categoría
+    </div>
+    <div style="font-family:'Lora',serif;font-size:.65rem;font-style:italic;color:#a07045;margin-top:.35rem;">Etiquetas en mayúscula, secciones del sidebar</div>
+  </div>
+</div>
+
+</body>
+</html>
