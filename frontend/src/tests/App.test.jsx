@@ -1,38 +1,44 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
-import App from '../App.jsx';
+import { render, screen } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
+import { MemoryRouter } from 'react-router-dom';
+import Sidebar from '../components/Sidebar.jsx';
 import React from 'react';
 
-describe('Biblioteca Digital Dashboard', () => {
-  it('renders the main title', () => {
-    render(<App />);
-    expect(screen.getByText(/Biblioteca Digital/i)).toBeInTheDocument();
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual('react-router-dom');
+  return { ...actual, NavLink: ({ children, className }) => <a className={typeof className === 'function' ? className({ isActive: false }) : className}>{children}</a> };
+});
+
+describe('Uteblo Sidebar', () => {
+  it('muestra el nombre Uteblo', () => {
+    render(
+      <MemoryRouter>
+        <Sidebar />
+      </MemoryRouter>
+    );
+    expect(screen.getByText('Uteblo')).toBeInTheDocument();
   });
 
-  it('renders mock books from synthetic data', () => {
-    render(<App />);
-    // "The Art of Automation" is the first book in mockData.js
-    expect(screen.getByText(/The Art of Automation/i)).toBeInTheDocument();
-    expect(screen.getByText(/Alex Rivera/i)).toBeInTheDocument();
+  it('muestra el subtítulo Sistema de Reservas', () => {
+    render(
+      <MemoryRouter>
+        <Sidebar />
+      </MemoryRouter>
+    );
+    expect(screen.getByText('Sistema de Reservas')).toBeInTheDocument();
   });
 
-  it('filters books by search term', () => {
-    render(<App />);
-    const searchInput = screen.getByPlaceholderText(/Buscar libros o autores/i);
-    
-    fireEvent.change(searchInput, { target: { value: 'FastAPI' } });
-    
-    expect(screen.getByText(/FastAPI Mastery/i)).toBeInTheDocument();
-    // "The Art of Automation" should be filtered out
-    expect(screen.queryByText(/The Art of Automation/i)).not.toBeInTheDocument();
-  });
-
-  it('shows "no results" message when search fails', () => {
-    render(<App />);
-    const searchInput = screen.getByPlaceholderText(/Buscar libros o autores/i);
-    
-    fireEvent.change(searchInput, { target: { value: 'NonExistentBook123' } });
-    
-    expect(screen.getByText(/No se encontraron libros/i)).toBeInTheDocument();
+  it('muestra todos los módulos de navegación', () => {
+    render(
+      <MemoryRouter>
+        <Sidebar />
+      </MemoryRouter>
+    );
+    expect(screen.getByText('Libros')).toBeInTheDocument();
+    expect(screen.getByText('Usuarios')).toBeInTheDocument();
+    expect(screen.getByText('Préstamos')).toBeInTheDocument();
+    expect(screen.getByText('Reservas')).toBeInTheDocument();
+    expect(screen.getByText('Multas')).toBeInTheDocument();
+    expect(screen.getByText('Notificaciones')).toBeInTheDocument();
   });
 });
