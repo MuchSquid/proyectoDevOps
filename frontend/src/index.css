@@ -42,10 +42,10 @@
   --status-available:   #187038;
   --status-reserved:    #8a3e08;
   --status-overdue:     #9a1c1c;
-  --status-active:      #1a4a8a;
+  --status-active:      #1a5a68;
   --status-returned:    #187038;
   --status-cancelled:   #6b5040;
-  --status-completed:   #5a3090;
+  --status-completed:   #4a7020;
   --status-pending:     #8a3e08;
   --status-paid:        #187038;
   --status-maintenance: #9a1c1c;
@@ -216,11 +216,11 @@ select option { background: #f5ede0; color: var(--text-primary); }
 .badge-available   { background: rgba(24,112,56,0.13);  color: var(--status-available);   border: 1px solid rgba(24,112,56,0.22); }
 .badge-reserved    { background: rgba(138,62,8,0.12);   color: var(--status-reserved);    border: 1px solid rgba(138,62,8,0.22); }
 .badge-maintenance { background: rgba(154,28,28,0.12);  color: var(--status-maintenance); border: 1px solid rgba(154,28,28,0.22); }
-.badge-active      { background: rgba(26,74,138,0.12);  color: var(--status-active);      border: 1px solid rgba(26,74,138,0.22); }
+.badge-active      { background: rgba(26,90,104,0.12);  color: var(--status-active);      border: 1px solid rgba(26,90,104,0.22); }
 .badge-returned    { background: rgba(24,112,56,0.13);  color: var(--status-returned);    border: 1px solid rgba(24,112,56,0.22); }
 .badge-overdue     { background: rgba(154,28,28,0.12);  color: var(--status-overdue);     border: 1px solid rgba(154,28,28,0.22); }
 .badge-cancelled   { background: rgba(107,80,64,0.12);  color: var(--status-cancelled);   border: 1px solid rgba(107,80,64,0.22); }
-.badge-completed   { background: rgba(90,48,144,0.12);  color: var(--status-completed);   border: 1px solid rgba(90,48,144,0.22); }
+.badge-completed   { background: rgba(74,112,32,0.12);  color: var(--status-completed);   border: 1px solid rgba(74,112,32,0.22); }
 .badge-pending     { background: rgba(192,136,64,0.14); color: var(--status-pending);     border: 1px solid rgba(192,136,64,0.22); }
 .badge-paid        { background: rgba(24,112,56,0.13);  color: var(--status-paid);        border: 1px solid rgba(24,112,56,0.22); }
 
