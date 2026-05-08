@@ -66,3 +66,11 @@ docker-compose.override.yml
 *.tmp
 *.bak
 *.cache
+#QA local enviorments
+backend/.venv/
+frontend/node_modules/
+**/__pycache__/
+.pytest_cache/
+
+# Local AI/editor artifacts
+.claude/

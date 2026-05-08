@@ -1,0 +1,25 @@
+d86c8ad | 2026-05-08 | MuchSquid | Merge pull request #5 from MuchSquid/feature/frontend-2.0
+24b0bd9 | 2026-05-08 | MuchSquid | feat: implemetación del backend 2.0
+616de1a | 2026-05-08 | MuchSquid | fix: connect frontend to backend — fix field name mismatches and status casing
+7264d9f | 2026-05-08 | MuchSquid | test: update tests to match Uteblo brand and sidebar structure
+a2b018a | 2026-05-08 | MuchSquid | style: replace text close button with HiOutlineXMark icon in UsersPage
+fce9d3f | 2026-05-08 | MuchSquid | style: replace text close button with HiOutlineXMark icon in BooksPage
+9790145 | 2026-05-08 | MuchSquid | feat: rename system to Uteblo in sidebar brand, fix HiOutlineBuildingLibrary import
+3e7eb5a | 2026-05-08 | MuchSquid | fix: remove conflicting sticky/min-height from sidebar CSS
+49c4c10 | 2026-05-08 | MuchSquid | style: rewrite components.css with warm sidebar glass and book cards
+1891142 | 2026-05-08 | MuchSquid | style: fix badge colors to warm palette (replace purple/blue with warm teal/olive)
+acac4bd | 2026-05-08 | MuchSquid | style: rewrite index.css with warm library glassmorphism theme
+d13f5fb | 2026-05-08 | MuchSquid | docs: add Uteblo redesign implementation plan (7 tasks)
+495ac4a | 2026-05-08 | MuchSquid | docs: add Uteblo UI redesign spec (library glassmorphism theme)
+56faba4 | 2026-05-07 | Gussephe_Benjamin | Merge pull request #4 from MuchSquid/feature/gussephe-benjamin
+5ea05a8 | 2026-05-07 | Gussephe Benjamin | feat(backend,frontend): add fines, notifications and HTTP API clients
+7000ae4 | 2026-05-07 | Gussephe_Benjamin | Merge pull request #3 from MuchSquid/feature/gussephe-benjamin
+ece52bc | 2026-05-07 | Gussephe Benjamin | feat(reservations): add reservation entity, API and migration
+625a198 | 2026-05-07 | Gussephe Benjamin | feat(books): add available_copies to BookUpdate schema and Postman collection
+9270e6f | 2026-05-07 | Gussephe_Benjamin | Merge pull request #2 from MuchSquid/feature/gussephe-benjamin
+63babbe | 2026-05-07 | Gussephe Benjamin | feat(backend): implement loan entity with business logic
+36ddf0f | 2026-05-07 | Gussephe_Benjamin | Merge pull request #1 from MuchSquid/feature/gussephe-benjamin
+0085f37 | 2026-05-07 | Gussephe Benjamin | feat(backend): implement User module with layered architecture and bcrypt password hashing
+7fa5861 | 2026-05-07 | Gussephe Benjamin | feat: implement complete backend structure for Book entity with CRUD operations
+13314d0 | 2026-05-03 | MuchSquid | feat: Setup del proyecto, implementacion de la primera version del frontend
+c2baac5 | 2026-05-03 | MuchSquid | first commit
