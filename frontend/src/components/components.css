@@ -4,7 +4,7 @@
 /* ===== SIDEBAR ===== */
 .sidebar {
   width: 240px;
-  min-height: 100vh;
+  height: 100vh;
   background: var(--glass-dark);
   backdrop-filter: blur(56px) saturate(155%);
   -webkit-backdrop-filter: blur(56px) saturate(155%);
@@ -12,9 +12,6 @@
   box-shadow: var(--shadow-dark);
   display: flex;
   flex-direction: column;
-  position: sticky;
-  top: 0;
-  height: 100vh;
   overflow-y: auto;
   z-index: 100;
 }
