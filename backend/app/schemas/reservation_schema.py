@@ -12,7 +12,7 @@ class ReservationBase(BaseModel):
 
 class ReservationCreate(ReservationBase):
     """Schema para crear un Reservation."""
-    pass
+    expiration_date: Optional[datetime] = Field(None, description="Fecha de vencimiento (por defecto 3 días)")
 
 
 class ReservationUpdate(BaseModel):
