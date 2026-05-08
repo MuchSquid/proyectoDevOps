@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uteblo — Diseño Final</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --font: 'Plus Jakarta Sans', system-ui, sans-serif;
+
+    /* Paleta cálida */
+    --bg:           #ede3d0;
+    --bg-2:         #e3d4b8;
+    --bg-3:         #d8c8a2;
+
+    /* Glass cálido */
+    --glass-light:  rgba(255, 249, 238, 0.60);
+    --glass-strong: rgba(255, 250, 240, 0.80);
+    --glass-dark:   rgba(28, 13, 4,   0.84);
+
+    --border-warm:  rgba(205, 162, 88, 0.38);
+    --border-dark:  rgba(200, 158, 78, 0.20);
+
+    --shadow-light: 0 10px 44px rgba(70,35,8,0.13),  0 2px 0 rgba(255,255,255,0.88) inset;
+    --shadow-dark:  0 10px 44px rgba(0,0,0,0.28),    0 1.5px 0 rgba(255,255,255,0.07) inset;
+
+    /* Texto */
+    --t-main:  #22100400;
+    --t-mid:   #6b3f20;
+    --t-soft:  #a87048;
+
+    /* Acento */
+    --caoba:   #8b4513;
+    --amber:   #c08840;
+    --caoba-g: linear-gradient(145deg, #a05018, #7a3410);
+  }
+
+  body {
+    font-family: var(--font);
+    background:
+      radial-gradient(ellipse 75% 55% at 12%  8%,  rgba(200,150,60,0.22) 0%, transparent 58%),
+      radial-gradient(ellipse 55% 50% at 88% 88%,  rgba(140,75,25,0.17)  0%, transparent 58%),
+      radial-gradient(ellipse 45% 38% at 55% 38%,  rgba(230,195,125,0.11) 0%, transparent 48%),
+      linear-gradient(148deg, #ede3d0 0%, #e3d4b8 55%, #d8c8a2 100%);
+    min-height: 100vh;
+    padding: 1.5rem 1.75rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    color: #221004;
+  }
+
+  /* ── GLASS UTILS ── */
+  .gl  { background:var(--glass-light);  backdrop-filter:blur(52px) saturate(180%) brightness(105%); -webkit-backdrop-filter:blur(52px) saturate(180%) brightness(105%); border:1px solid var(--border-warm); border-radius:18px; box-shadow:var(--shadow-light); }
+  .gs  { background:var(--glass-strong); backdrop-filter:blur(64px) saturate(200%) brightness(107%); -webkit-backdrop-filter:blur(64px) saturate(200%) brightness(107%); border:1px solid rgba(215,175,108,0.52); border-radius:18px; box-shadow:var(--shadow-light); }
+  .gd  { background:var(--glass-dark);   backdrop-filter:blur(56px) saturate(155%);                  -webkit-backdrop-filter:blur(56px) saturate(155%);                  border:1px solid var(--border-dark); border-radius:18px; box-shadow:var(--shadow-dark); }
+
+  /* ── LAYOUT ── */
+  .frame { display:flex; gap:1rem; max-width:1020px; margin:0 auto; width:100%; }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 220px; flex-shrink:0;
+    padding: 1.25rem 0.8rem;
+    display: flex; flex-direction:column; gap:0.3rem;
+  }
+  .brand {
+    display:flex; align-items:center; gap:0.7rem;
+    padding: 0.35rem 0.5rem 1rem;
+    border-bottom: 1px solid var(--border-dark);
+    margin-bottom: 0.6rem;
+  }
+  .brand-icon {
+    width:38px; height:38px;
+    background: linear-gradient(145deg, #d4935a, #8b4010);
+    border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:1.1rem;
+    box-shadow: 0 4px 14px rgba(0,0,0,.36), 0 1px 0 rgba(255,255,255,.18) inset;
+  }
+  .brand-name { font-size:1.05rem; font-weight:800; color:#ecd898; letter-spacing:-0.02em; }
+  .brand-sub  { font-size:0.58rem; font-weight:500; color:rgba(210,170,88,.42); letter-spacing:0.05em; text-transform:uppercase; }
+
+  .nav-group-label { font-size:0.58rem; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; color:rgba(210,170,78,.36); padding:0.5rem 0.5rem 0.2rem; }
+
+  .nav-item {
+    display:flex; align-items:center; gap:0.65rem;
+    padding:0.58rem 0.75rem; border-radius:12px;
+    font-size:0.835rem; font-weight:500; color:rgba(228,196,132,.62);
+    cursor:pointer; transition:all .18s ease;
+  }
+  .nav-item.active {
+    background: rgba(200,138,58,.22);
+    backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+    color: #f2cc78;
+    border: 1px solid rgba(200,138,58,.30);
+    box-shadow: 0 2px 10px rgba(0,0,0,.18), 0 1px 0 rgba(255,255,255,.08) inset;
+  }
+  .nav-item:not(.active):hover { background:rgba(205,158,68,.10); color:rgba(228,196,132,.94); }
+  .nav-icon { font-size:.9rem; width:1.15rem; text-align:center; }
+
+  .sidebar-footer {
+    margin-top:auto; padding:.85rem .5rem 0;
+    border-top: 1px solid var(--border-dark);
+    font-size:.6rem; font-weight:500;
+    color:rgba(210,170,78,.30); letter-spacing:.04em;
+  }
+
+  /* ── MAIN ── */
+  .main { flex:1; padding:1.6rem; display:flex; flex-direction:column; gap:1.1rem; overflow:hidden; min-width:0; }
+
+  .page-header { display:flex; justify-content:space-between; align-items:flex-start; }
+  .page-title  { font-size:1.7rem; font-weight:800; color:#221004; letter-spacing:-.04em; line-height:1.1; }
+  .page-sub    { font-size:.78rem; font-weight:400; color:#a87048; margin-top:.22rem; }
+
+  .btn {
+    background: var(--caoba-g);
+    color: rgba(255,238,210,.95);
+    border:none; border-radius:11px; padding:.6rem 1.15rem;
+    font-family:var(--font); font-size:.8rem; font-weight:700; letter-spacing:-.01em;
+    cursor:pointer; display:flex; align-items:center; gap:.4rem;
+    box-shadow: 0 5px 18px rgba(100,38,8,.30), 0 1px 0 rgba(255,255,255,.14) inset;
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .btn:hover { transform:translateY(-2px); box-shadow: 0 8px 24px rgba(100,38,8,.38); }
+
+  /* ── STATS ── */
+  .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:.7rem; }
+  .stat  { padding:.9rem 1rem; display:flex; flex-direction:column; gap:.2rem; }
+  .stat-icon  { font-size:1.1rem; margin-bottom:.1rem; }
+  .stat-label { font-size:.6rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:#a87048; }
+  .stat-value { font-size:1.8rem; font-weight:800; color:#221004; line-height:1; letter-spacing:-.045em; }
+
+  /* ── SEARCH ── */
+  .search-wrap { position:relative; }
+  .search-icon { position:absolute; left:.9rem; top:50%; transform:translateY(-50%); font-size:.82rem; color:#a87048; pointer-events:none; }
+  .search {
+    width:100%;
+    background: rgba(255,249,235,.60);
+    backdrop-filter:blur(42px) saturate(165%); -webkit-backdrop-filter:blur(42px) saturate(165%);
+    border:1px solid rgba(205,162,96,.38); border-radius:12px;
+    padding:.6rem .9rem .6rem 2.4rem;
+    font-family:var(--font); font-size:.82rem; font-weight:400; color:#221004; outline:none;
+    box-shadow: 0 2px 10px rgba(100,55,15,.07), 0 1.5px 0 rgba(255,255,255,.90) inset;
+  }
+  .search::placeholder { color:#a87048; }
+
+  /* ── BOOKS ── */
+  .books { display:grid; grid-template-columns:repeat(3,1fr); gap:.85rem; overflow-y:auto; padding-right:2px; }
+  .book-card { border-radius:16px; overflow:hidden; cursor:pointer; transition:transform .22s cubic-bezier(.25,.46,.45,.94), box-shadow .22s; }
+  .book-card:hover { transform:translateY(-4px) scale(1.01); box-shadow: 0 18px 50px rgba(70,32,8,.22), 0 2px 0 rgba(255,255,255,.92) inset !important; }
+  .book-cover { height:84px; display:flex; align-items:center; justify-content:center; font-size:2.1rem; position:relative; }
+  .book-cover::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg,rgba(255,255,255,.12) 0%,transparent 65%); pointer-events:none; }
+  .book-body { padding:.75rem .9rem .85rem; }
+  .book-title  { font-size:.8rem; font-weight:700; color:#221004; line-height:1.3; letter-spacing:-.015em; }
+  .book-author { font-size:.63rem; font-weight:400; color:#a87048; margin-top:.18rem; }
+  .badge { display:inline-block; margin-top:.42rem; font-size:.58rem; font-weight:700; letter-spacing:.02em; padding:.18rem .55rem; border-radius:999px; }
+  .b-ok  { background:rgba(25,125,55,.13); color:#18703a; border:1px solid rgba(25,125,55,.22); }
+  .b-rsv { background:rgba(158,72,14,.12);  color:#8a3e08; border:1px solid rgba(158,72,14,.22); }
+  .b-out { background:rgba(180,35,35,.12);  color:#9a1c1c; border:1px solid rgba(180,35,35,.22); }
+
+  /* ── TABLE (Préstamos / Usuarios) ── */
+  .table-wrap { border-radius:14px; overflow:hidden; border:1px solid var(--border-warm); }
+  table { width:100%; border-collapse:collapse; font-size:.82rem; }
+  thead tr { background:rgba(255,249,235,.45); border-bottom:1px solid var(--border-warm); }
+  th { padding:.75rem 1.1rem; text-align:left; font-weight:700; font-size:.65rem; text-transform:uppercase; letter-spacing:.07em; color:#a87048; white-space:nowrap; }
+  td { padding:.78rem 1.1rem; border-bottom:1px solid rgba(200,160,80,.10); color:#221004; font-weight:400; }
+  tbody tr:last-child td { border-bottom:none; }
+  tbody tr:hover { background:rgba(205,162,88,.07); }
+
+  /* ── MODAL PREVIEW ── */
+  .modal-wrap { position:relative; }
+  .modal-overlay { background:rgba(34,16,4,.35); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border-radius:14px; padding:2.5rem 1.5rem; display:flex; align-items:center; justify-content:center; }
+  .modal {
+    background: rgba(255,249,235,.88);
+    backdrop-filter:blur(72px) saturate(220%) brightness(110%); -webkit-backdrop-filter:blur(72px) saturate(220%) brightness(110%);
+    border:1px solid rgba(215,175,108,.55); border-radius:20px; padding:1.5rem;
+    width:100%; max-width:340px;
+    box-shadow: 0 20px 60px rgba(70,35,8,.22), 0 2px 0 rgba(255,255,255,.95) inset;
+  }
+  .modal-title { font-size:.95rem; font-weight:800; color:#221004; letter-spacing:-.025em; margin-bottom:1rem; }
+  .form-label  { font-size:.65rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:#a87048; display:block; margin-bottom:.3rem; }
+  .form-input  {
+    width:100%; background:rgba(255,249,235,.60);
+    backdrop-filter:blur(30px); -webkit-backdrop-filter:blur(30px);
+    border:1px solid rgba(205,162,90,.38); border-radius:10px;
+    padding:.52rem .8rem; font-family:var(--font); font-size:.8rem; font-weight:400; color:#221004; outline:none;
+    box-shadow: 0 1.5px 0 rgba(255,255,255,.92) inset;
+    margin-bottom:.75rem;
+  }
+
+  /* ── TOKEN PANEL ── */
+  .tokens { display:grid; grid-template-columns:repeat(3,1fr); gap:.75rem; max-width:1020px; margin:0 auto; width:100%; }
+  .token-card { padding:1rem 1.1rem; }
+  .token-title { font-size:.6rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:#a87048; margin-bottom:.55rem; }
+
+  ::-webkit-scrollbar { width:5px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  ::-webkit-scrollbar-thumb { background:rgba(170,115,55,.28); border-radius:3px; }
+</style>
+</head>
+<body>
+
+<!-- HERO LABEL -->
+<div style="text-align:center;max-width:1020px;margin:0 auto 0.1rem;">
+  <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.55rem;font-weight:800;color:#221004;letter-spacing:-.04em;opacity:.22;line-height:1;">Uteblo</div>
+  <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.72rem;font-weight:500;color:#a87048;margin-top:.1rem;">Diseño final — Plus Jakarta Sans · Glassmorphism Apple · Paleta cálida biblioteca</div>
+</div>
+
+<!-- ① PÁGINA PRINCIPAL: LIBROS -->
+<div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#a87048;max-width:1020px;margin:0 auto;width:100%;">① Vista principal — Libros</div>
+
+<div class="frame" style="height:540px;">
+  <div class="sidebar gd">
+    <div class="brand">
+      <div class="brand-icon">📚</div>
+      <div>
+        <div class="brand-name">Uteblo</div>
+        <div class="brand-sub">Sistema de Reservas</div>
+      </div>
+    </div>
+    <div class="nav-group-label">Módulos</div>
+    <div class="nav-item active"><span class="nav-icon">📖</span> Libros</div>
+    <div class="nav-item"><span class="nav-icon">👤</span> Usuarios</div>
+    <div class="nav-item"><span class="nav-icon">📋</span> Préstamos</div>
+    <div class="nav-item"><span class="nav-icon">🔖</span> Reservas</div>
+    <div class="nav-item"><span class="nav-icon">💰</span> Multas</div>
+    <div class="nav-item"><span class="nav-icon">🔔</span> Notificaciones</div>
+    <div class="sidebar-footer">API · localhost:8000</div>
+  </div>
+  <div class="main gs">
+    <div class="page-header">
+      <div>
+        <div class="page-title">📖 Catálogo de Libros</div>
+        <div class="page-sub">142 libros en colección · 98 disponibles hoy</div>
+      </div>
+      <button class="btn">＋ Agregar libro</button>
+    </div>
+    <div class="stats">
+      <div class="stat gl"><div class="stat-icon">📚</div><div class="stat-label">Total</div><div class="stat-value">142</div></div>
+      <div class="stat gl"><div class="stat-icon">✅</div><div class="stat-label">Disponibles</div><div class="stat-value">98</div></div>
+      <div class="stat gl"><div class="stat-icon">🔖</div><div class="stat-label">Prestados</div><div class="stat-value">32</div></div>
+      <div class="stat gl"><div class="stat-icon">⏰</div><div class="stat-label">Vencidos</div><div class="stat-value" style="color:#9a1c1c;">12</div></div>
+    </div>
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search" placeholder="Buscar por título, autor o editorial…">
+    </div>
+    <div class="books">
+      <div class="book-card gl"><div class="book-cover" style="background:linear-gradient(135deg,#8b2020,#bf3a28);">📕</div><div class="book-body"><div class="book-title">Don Quijote de la Mancha</div><div class="book-author">Miguel de Cervantes · 1605</div><span class="badge b-ok">3 disponibles</span></div></div>
+      <div class="book-card gl"><div class="book-cover" style="background:linear-gradient(135deg,#1a5c3a,#2e7a50);">📗</div><div class="book-body"><div class="book-title">Cien Años de Soledad</div><div class="book-author">Gabriel García Márquez · 1967</div><span class="badge b-rsv">Reservado</span></div></div>
+      <div class="book-card gl"><div class="book-cover" style="background:linear-gradient(135deg,#1a2d5c,#2d4a90);">📘</div><div class="book-body"><div class="book-title">El Principito</div><div class="book-author">Antoine de Saint-Exupéry · 1943</div><span class="badge b-ok">1 disponible</span></div></div>
+      <div class="book-card gl"><div class="book-cover" style="background:linear-gradient(135deg,#5c3a1a,#8a5828);">📙</div><div class="book-body"><div class="book-title">Rayuela</div><div class="book-author">Julio Cortázar · 1963</div><span class="badge b-ok">2 disponibles</span></div></div>
+      <div class="book-card gl"><div class="book-cover" style="background:linear-gradient(135deg,#4a1a5c,#7a2d8a);">📓</div><div class="book-body"><div class="book-title">La Casa de los Espíritus</div><div class="book-author">Isabel Allende · 1982</div><span class="badge b-rsv">Reservado</span></div></div>
+      <div class="book-card gl"><div class="book-cover" style="background:linear-gradient(135deg,#5c1a1a,#8a2828);">📔</div><div class="book-body"><div class="book-title">Ficciones</div><div class="book-author">Jorge Luis Borges · 1944</div><span class="badge b-ok">4 disponibles</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ② VISTA PRÉSTAMOS (tabla) -->
+<div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#a87048;max-width:1020px;margin:0 auto;width:100%;">② Vista tabla — Préstamos / Usuarios</div>
+
+<div class="frame" style="height:260px;">
+  <div class="sidebar gd" style="justify-content:flex-start;gap:.28rem;">
+    <div class="brand">
+      <div class="brand-icon">📚</div>
+      <div><div class="brand-name">Uteblo</div><div class="brand-sub">Sistema de Reservas</div></div>
+    </div>
+    <div class="nav-group-label">Módulos</div>
+    <div class="nav-item"><span class="nav-icon">📖</span> Libros</div>
+    <div class="nav-item active"><span class="nav-icon">📋</span> Préstamos</div>
+    <div class="nav-item"><span class="nav-icon">🔖</span> Reservas</div>
+  </div>
+  <div class="main gs" style="gap:.85rem;">
+    <div class="page-header">
+      <div>
+        <div class="page-title">📋 Préstamos</div>
+        <div class="page-sub">44 préstamos activos este mes</div>
+      </div>
+      <button class="btn">＋ Nuevo préstamo</button>
+    </div>
+    <div class="table-wrap gl">
+      <table>
+        <thead><tr><th>Usuario</th><th>Libro</th><th>Fecha préstamo</th><th>Vencimiento</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:600;">Ana García</td><td>Don Quijote</td><td>01/05/2026</td><td>15/05/2026</td><td><span class="badge b-ok">Activo</span></td></tr>
+          <tr><td style="font-weight:600;">Luis Torres</td><td>Cien Años de Soledad</td><td>18/04/2026</td><td>02/05/2026</td><td><span class="badge b-out">Vencido</span></td></tr>
+          <tr><td style="font-weight:600;">María López</td><td>El Principito</td><td>05/05/2026</td><td>19/05/2026</td><td><span class="badge b-ok">Activo</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ③ MODAL -->
+<div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#a87048;max-width:1020px;margin:0 auto;width:100%;">③ Modal — Agregar / editar libro</div>
+
+<div style="max-width:1020px;margin:0 auto;width:100%;">
+  <div class="modal-overlay gl">
+    <div class="modal">
+      <div class="modal-title">✦ Nuevo libro</div>
+      <label class="form-label">Título</label>
+      <input class="form-input" placeholder="Ej. El nombre de la rosa">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;">
+        <div>
+          <label class="form-label">Editorial</label>
+          <input class="form-input" placeholder="Editorial">
+        </div>
+        <div>
+          <label class="form-label">Año</label>
+          <input class="form-input" placeholder="2024">
+        </div>
+      </div>
+      <div style="display:flex;gap:.6rem;justify-content:flex-end;margin-top:.25rem;">
+        <button style="background:rgba(205,162,88,.18);border:1px solid rgba(205,162,88,.32);border-radius:10px;padding:.52rem 1rem;font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;font-weight:600;color:#6b3f20;cursor:pointer;">Cancelar</button>
+        <button class="btn" style="padding:.52rem 1.1rem;">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ④ TOKENS -->
+<div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#a87048;max-width:1020px;margin:0 auto;width:100%;">④ Sistema de diseño — tokens</div>
+
+<div class="tokens">
+  <div class="token-card gl">
+    <div class="token-title">Paleta cálida</div>
+    <div style="display:flex;flex-direction:column;gap:.4rem;">
+      <div style="display:flex;align-items:center;gap:.6rem;"><div style="width:20px;height:20px;border-radius:6px;background:#ede3d0;border:1px solid #c8a870;flex-shrink:0;"></div><span style="font-size:.7rem;font-weight:500;color:#6b3f20;">#ede3d0 — Fondo crema</span></div>
+      <div style="display:flex;align-items:center;gap:.6rem;"><div style="width:20px;height:20px;border-radius:6px;background:#8b4513;flex-shrink:0;"></div><span style="font-size:.7rem;font-weight:500;color:#6b3f20;">#8b4513 — Caoba acento</span></div>
+      <div style="display:flex;align-items:center;gap:.6rem;"><div style="width:20px;height:20px;border-radius:6px;background:#221004;flex-shrink:0;"></div><span style="font-size:.7rem;font-weight:500;color:#6b3f20;">#221004 — Texto oscuro</span></div>
+      <div style="display:flex;align-items:center;gap:.6rem;"><div style="width:20px;height:20px;border-radius:6px;background:#c08840;flex-shrink:0;"></div><span style="font-size:.7rem;font-weight:500;color:#6b3f20;">#c08840 — Ámbar dorado</span></div>
+      <div style="display:flex;align-items:center;gap:.6rem;"><div style="width:20px;height:20px;border-radius:6px;background:#187038;flex-shrink:0;"></div><span style="font-size:.7rem;font-weight:500;color:#6b3f20;">#187038 — Verde disponible</span></div>
+      <div style="display:flex;align-items:center;gap:.6rem;"><div style="width:20px;height:20px;border-radius:6px;background:#9a1c1c;flex-shrink:0;"></div><span style="font-size:.7rem;font-weight:500;color:#6b3f20;">#9a1c1c — Rojo vencido</span></div>
+    </div>
+  </div>
+  <div class="token-card gl">
+    <div class="token-title">Glassmorphism</div>
+    <div style="font-size:.7rem;font-weight:400;color:#6b3f20;line-height:2;">
+      <strong style="font-weight:700;">Glass claro</strong> — blur 52px, sat 180%<br>
+      <strong style="font-weight:700;">Glass fuerte</strong> — blur 64px, sat 200%<br>
+      <strong style="font-weight:700;">Glass oscuro</strong> — blur 56px, sidebar<br>
+      <strong style="font-weight:700;">Glass modal</strong> — blur 72px, sat 220%<br>
+      <strong style="font-weight:700;">Borde cálido</strong> — rgba(205,162,88,.38)<br>
+      <strong style="font-weight:700;">Inset blanco</strong> — 0 2px 0 rgba(255,255,255,.88)
+    </div>
+  </div>
+  <div class="token-card gl">
+    <div class="token-title">Tipografía</div>
+    <div style="display:flex;flex-direction:column;gap:.55rem;">
+      <div><div style="font-size:1.4rem;font-weight:800;color:#221004;letter-spacing:-.04em;line-height:1;">Uteblo</div><div style="font-size:.6rem;color:#a87048;font-weight:500;margin-top:.1rem;">800 · Títulos de página</div></div>
+      <div><div style="font-size:.9rem;font-weight:600;color:#221004;letter-spacing:-.02em;">Catálogo de Libros</div><div style="font-size:.6rem;color:#a87048;font-weight:500;margin-top:.1rem;">600 · Subtítulos, nav activo</div></div>
+      <div><div style="font-size:.8rem;font-weight:400;color:#6b3f20;">Miguel de Cervantes · 1605</div><div style="font-size:.6rem;color:#a87048;font-weight:500;margin-top:.1rem;">400 · Metadata, descripción</div></div>
+      <div><div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#a87048;">Estado · Total</div><div style="font-size:.6rem;color:#a87048;font-weight:500;margin-top:.1rem;">700 caps · Labels y badges</div></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

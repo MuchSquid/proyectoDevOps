@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BiblioSys — Apple Glass + Biblioteca</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --font-apple: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    --font-serif: 'Playfair Display', Georgia, serif;
+    --cream:      #f5ede0;
+    --warm-dark:  rgba(40, 22, 8, 0.80);
+    --gold:       #c9894a;
+    --text-main:  #2c1508;
+    --text-mid:   #7a4f30;
+    --text-soft:  #b08060;
+    --glass-bg:   rgba(255, 250, 242, 0.55);
+    --glass-bg-strong: rgba(255, 248, 238, 0.75);
+    --glass-border: rgba(210, 170, 110, 0.40);
+    --glass-shadow: 0 8px 40px rgba(80, 40, 10, 0.14), 0 1.5px 0 rgba(255,255,255,0.85) inset, 0 -1px 0 rgba(180,130,70,0.18) inset;
+  }
+
+  body {
+    font-family: var(--font-apple);
+    background:
+      radial-gradient(ellipse 70% 50% at 15% 10%, rgba(210,160,80,0.22) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 55% at 85% 85%, rgba(160,90,40,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 55% 40%, rgba(240,200,140,0.12) 0%, transparent 50%),
+      linear-gradient(150deg, #f2e8d8 0%, #e8d8c0 50%, #deccaa 100%);
+    min-height: 100vh;
+    padding: 1.5rem 2rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  /* ===== GLASSMORPHISM FUERTE ===== */
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(48px) saturate(180%) brightness(105%);
+    -webkit-backdrop-filter: blur(48px) saturate(180%) brightness(105%);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    box-shadow: var(--glass-shadow);
+  }
+  .glass-strong {
+    background: var(--glass-bg-strong);
+    backdrop-filter: blur(60px) saturate(200%) brightness(108%);
+    -webkit-backdrop-filter: blur(60px) saturate(200%) brightness(108%);
+    border: 1px solid rgba(220,180,120,0.55);
+    border-radius: 20px;
+    box-shadow:
+      0 12px 50px rgba(80,40,10,0.18),
+      0 2px 0 rgba(255,255,255,0.95) inset,
+      0 -1px 0 rgba(180,130,70,0.22) inset;
+  }
+  .glass-dark {
+    background: rgba(35, 18, 6, 0.82);
+    backdrop-filter: blur(56px) saturate(160%);
+    -webkit-backdrop-filter: blur(56px) saturate(160%);
+    border: 1px solid rgba(210,165,80,0.22);
+    border-radius: 20px;
+    box-shadow:
+      0 12px 50px rgba(0,0,0,0.28),
+      0 1.5px 0 rgba(255,255,255,0.07) inset;
+  }
+
+  /* ===== LAYOUT ===== */
+  .app-frame {
+    display: flex;
+    gap: 1rem;
+    height: 560px;
+    max-width: 980px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  /* ===== SIDEBAR ===== */
+  .sidebar {
+    width: 215px;
+    padding: 1.25rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    flex-shrink: 0;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.4rem 0.5rem 1rem;
+    border-bottom: 1px solid rgba(210,165,80,0.18);
+    margin-bottom: 0.5rem;
+  }
+  .brand-icon {
+    width: 36px; height: 36px;
+    background: linear-gradient(145deg, #d4935a, #8b4513);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.05rem;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.18) inset;
+  }
+  .brand-name {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    font-weight: 700;
+    color: #ecd9a8;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+  .brand-sub {
+    font-family: var(--font-apple);
+    font-size: 0.58rem;
+    font-weight: 500;
+    color: rgba(210,175,100,0.5);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .nav-section {
+    font-size: 0.58rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(210,175,100,0.38);
+    padding: 0.5rem 0.5rem 0.2rem;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.58rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.825rem;
+    font-weight: 500;
+    color: rgba(230,200,145,0.65);
+    cursor: pointer;
+    letter-spacing: -0.01em;
+    transition: all 0.18s ease;
+  }
+  .nav-item.active {
+    background: rgba(205,145,70,0.20);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    color: #f0cc80;
+    border: 1px solid rgba(205,145,70,0.30);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.18), 0 1px 0 rgba(255,255,255,0.08) inset;
+  }
+  .nav-item:not(.active):hover {
+    background: rgba(210,165,80,0.10);
+    color: rgba(230,200,145,0.90);
+  }
+  .nav-icon { font-size: 0.9rem; width: 1.1rem; text-align: center; }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding: 0.85rem 0.5rem 0;
+    border-top: 1px solid rgba(210,165,80,0.14);
+    font-size: 0.62rem;
+    font-weight: 500;
+    color: rgba(210,175,100,0.35);
+    letter-spacing: 0.02em;
+  }
+
+  /* ===== MAIN ===== */
+  .main {
+    flex: 1;
+    padding: 1.5rem 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    overflow: hidden;
+    min-width: 0;
+  }
+
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .page-title {
+    font-family: var(--font-serif);
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+  }
+  .page-sub {
+    font-family: var(--font-apple);
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: var(--text-soft);
+    margin-top: 0.25rem;
+    letter-spacing: -0.01em;
+  }
+
+  .btn-add {
+    background: linear-gradient(145deg, #a0521e, #7a3810);
+    color: rgba(255,240,215,0.95);
+    border: none;
+    border-radius: 12px;
+    padding: 0.6rem 1.15rem;
+    font-family: var(--font-apple);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    box-shadow:
+      0 5px 18px rgba(100,40,10,0.32),
+      0 1px 0 rgba(255,255,255,0.14) inset;
+  }
+
+  /* ===== STATS ===== */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.7rem;
+  }
+  .stat {
+    padding: 0.9rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .stat-icon { font-size: 1.1rem; margin-bottom: 0.15rem; }
+  .stat-label {
+    font-family: var(--font-apple);
+    font-size: 0.62rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text-soft);
+  }
+  .stat-value {
+    font-family: var(--font-serif);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  /* ===== SEARCH ===== */
+  .search-wrap { position: relative; }
+  .search-icon {
+    position: absolute;
+    left: 0.9rem; top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.85rem;
+    color: var(--text-soft);
+    pointer-events: none;
+  }
+  .search-bar {
+    width: 100%;
+    background: rgba(255,250,240,0.60);
+    backdrop-filter: blur(40px) saturate(160%);
+    -webkit-backdrop-filter: blur(40px) saturate(160%);
+    border: 1px solid rgba(210,170,110,0.38);
+    border-radius: 12px;
+    padding: 0.6rem 0.9rem 0.6rem 2.4rem;
+    font-family: var(--font-apple);
+    font-size: 0.82rem;
+    font-weight: 400;
+    color: var(--text-main);
+    outline: none;
+    box-shadow: 0 2px 10px rgba(100,60,20,0.07), 0 1.5px 0 rgba(255,255,255,0.85) inset;
+    letter-spacing: -0.01em;
+  }
+  .search-bar::placeholder { color: var(--text-soft); }
+
+  /* ===== BOOKS GRID ===== */
+  .books-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.85rem;
+    overflow-y: auto;
+    padding-right: 2px;
+  }
+  .book-card {
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.22s cubic-bezier(.25,.46,.45,.94), box-shadow 0.22s ease;
+  }
+  .book-card:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow:
+      0 18px 48px rgba(80,40,10,0.20),
+      0 2px 0 rgba(255,255,255,0.90) inset !important;
+  }
+  .book-cover {
+    height: 82px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.1rem;
+    position: relative;
+  }
+  .book-cover::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .book-body { padding: 0.75rem 0.9rem 0.85rem; }
+  .book-title {
+    font-family: var(--font-serif);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+  }
+  .book-author {
+    font-family: var(--font-apple);
+    font-size: 0.63rem;
+    font-weight: 400;
+    color: var(--text-soft);
+    margin-top: 0.2rem;
+    letter-spacing: -0.005em;
+  }
+  .badge {
+    display: inline-block;
+    margin-top: 0.45rem;
+    font-family: var(--font-apple);
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    padding: 0.18rem 0.55rem;
+    border-radius: 999px;
+  }
+  .badge-ok   { background: rgba(34,139,60,0.13); color: #1e7a38; border: 1px solid rgba(34,139,60,0.22); }
+  .badge-rsv  { background: rgba(170,85,20,0.12);  color: #9a4a10; border: 1px solid rgba(170,85,20,0.22); }
+
+  /* SCROLLBAR WARM */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(180,130,70,0.30); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- LABEL TOP -->
+<div style="text-align:center;max-width:980px;margin:0 auto 0.25rem;">
+  <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:#5a3520;opacity:0.55;letter-spacing:-0.01em;">Vista previa — Glassmorphism Apple + Temática Biblioteca</div>
+  <div style="font-family:-apple-system,sans-serif;font-size:0.72rem;color:#b08060;margin-top:0.15rem;font-weight:400;">blur(48–60px) · SF Pro / sistema · Playfair Display para títulos · Tinte cálido crema</div>
+</div>
+
+<div class="app-frame">
+
+  <!-- SIDEBAR GLASS OSCURO -->
+  <div class="sidebar glass-dark">
+    <div class="brand">
+      <div class="brand-icon">📚</div>
+      <div>
+        <div class="brand-name">BiblioSys</div>
+        <div class="brand-sub">Sistema de Reservas</div>
+      </div>
+    </div>
+
+    <div class="nav-section">Módulos</div>
+    <div class="nav-item active"><span class="nav-icon">📖</span> Libros</div>
+    <div class="nav-item"><span class="nav-icon">👤</span> Usuarios</div>
+    <div class="nav-item"><span class="nav-icon">📋</span> Préstamos</div>
+    <div class="nav-item"><span class="nav-icon">🔖</span> Reservas</div>
+    <div class="nav-item"><span class="nav-icon">💰</span> Multas</div>
+    <div class="nav-item"><span class="nav-icon">🔔</span> Notificaciones</div>
+
+    <div class="sidebar-footer">API · localhost:8000</div>
+  </div>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <div class="main glass-strong">
+
+    <div class="page-header">
+      <div>
+        <div class="page-title">📖 Catálogo de Libros</div>
+        <div class="page-sub">142 libros · 98 disponibles ahora</div>
+      </div>
+      <button class="btn-add">＋ Agregar libro</button>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat glass"><div class="stat-icon">📚</div><div class="stat-label">Total</div><div class="stat-value">142</div></div>
+      <div class="stat glass"><div class="stat-icon">✅</div><div class="stat-label">Disponibles</div><div class="stat-value">98</div></div>
+      <div class="stat glass"><div class="stat-icon">🔖</div><div class="stat-label">Prestados</div><div class="stat-value">32</div></div>
+      <div class="stat glass"><div class="stat-icon">⏰</div><div class="stat-label">Vencidos</div><div class="stat-value" style="color:#b83a10;">12</div></div>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-bar" placeholder="Buscar por título, autor o editorial…" />
+    </div>
+
+    <!-- BOOKS GRID -->
+    <div class="books-grid">
+      <div class="book-card glass">
+        <div class="book-cover" style="background:linear-gradient(135deg,#8b2020,#bf3a28);">📕</div>
+        <div class="book-body">
+          <div class="book-title">Don Quijote de la Mancha</div>
+          <div class="book-author">Miguel de Cervantes · 1605</div>
+          <span class="badge badge-ok">3 disponibles</span>
+        </div>
+      </div>
+      <div class="book-card glass">
+        <div class="book-cover" style="background:linear-gradient(135deg,#1a5c3a,#2e7a50);">📗</div>
+        <div class="book-body">
+          <div class="book-title">Cien Años de Soledad</div>
+          <div class="book-author">Gabriel García Márquez · 1967</div>
+          <span class="badge badge-rsv">Reservado</span>
+        </div>
+      </div>
+      <div class="book-card glass">
+        <div class="book-cover" style="background:linear-gradient(135deg,#1a2d5c,#2d4a90);">📘</div>
+        <div class="book-body">
+          <div class="book-title">El Principito</div>
+          <div class="book-author">Antoine de Saint-Exupéry · 1943</div>
+          <span class="badge badge-ok">1 disponible</span>
+        </div>
+      </div>
+      <div class="book-card glass">
+        <div class="book-cover" style="background:linear-gradient(135deg,#5c3a1a,#8a5a28);">📙</div>
+        <div class="book-body">
+          <div class="book-title">Rayuela</div>
+          <div class="book-author">Julio Cortázar · 1963</div>
+          <span class="badge badge-ok">2 disponibles</span>
+        </div>
+      </div>
+      <div class="book-card glass">
+        <div class="book-cover" style="background:linear-gradient(135deg,#4a1a5c,#7a2d8a);">📓</div>
+        <div class="book-body">
+          <div class="book-title">La Casa de los Espíritus</div>
+          <div class="book-author">Isabel Allende · 1982</div>
+          <span class="badge badge-rsv">Reservado</span>
+        </div>
+      </div>
+      <div class="book-card glass">
+        <div class="book-cover" style="background:linear-gradient(135deg,#5c1a1a,#8a2828);">📔</div>
+        <div class="book-body">
+          <div class="book-title">Ficciones</div>
+          <div class="book-author">Jorge Luis Borges · 1944</div>
+          <span class="badge badge-ok">4 disponibles</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TOKENS DE DISEÑO -->
+<div style="max-width:980px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;">
+  <div class="glass" style="padding:0.9rem 1.1rem;">
+    <div style="font-family:-apple-system,sans-serif;font-size:0.6rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#a07050;margin-bottom:0.5rem;">Paleta cálida</div>
+    <div style="display:flex;gap:0.45rem;flex-wrap:wrap;align-items:center;">
+      <div style="width:26px;height:26px;border-radius:50%;background:#f2e8d8;border:1.5px solid #d0b080;" title="Crema fondo"></div>
+      <div style="width:26px;height:26px;border-radius:50%;background:#8b4513;" title="Caoba"></div>
+      <div style="width:26px;height:26px;border-radius:50%;background:#2c1508;" title="Texto oscuro"></div>
+      <div style="width:26px;height:26px;border-radius:50%;background:#c9894a;" title="Dorado ámbar"></div>
+      <div style="width:26px;height:26px;border-radius:50%;background:#1e7a38;" title="Verde disponible"></div>
+      <div style="width:26px;height:26px;border-radius:50%;background:#b83a10;" title="Rojo vencido"></div>
+    </div>
+  </div>
+  <div class="glass" style="padding:0.9rem 1.1rem;">
+    <div style="font-family:-apple-system,sans-serif;font-size:0.6rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#a07050;margin-bottom:0.4rem;">Tipografía</div>
+    <div style="font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:#2c1508;line-height:1.2;letter-spacing:-0.02em;">Playfair Display</div>
+    <div style="font-family:-apple-system,sans-serif;font-size:0.6rem;color:#a07050;margin-bottom:0.45rem;">Títulos y encabezados de página</div>
+    <div style="font-family:-apple-system,sans-serif;font-size:0.9rem;font-weight:500;color:#5a3520;letter-spacing:-0.01em;">SF Pro / Sistema</div>
+    <div style="font-family:-apple-system,sans-serif;font-size:0.6rem;color:#a07050;">UI, labels, botones — estilo Apple</div>
+  </div>
+  <div class="glass" style="padding:0.9rem 1.1rem;">
+    <div style="font-family:-apple-system,sans-serif;font-size:0.6rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#a07050;margin-bottom:0.45rem;">Glass tokens</div>
+    <div style="font-family:-apple-system,sans-serif;font-size:0.7rem;color:#5a3520;line-height:1.8;font-weight:400;">
+      blur: 48–60px<br>
+      saturate: 180–200%<br>
+      bg: rgba(255,250,242, 0.55–0.75)<br>
+      border: rgba(210,170,110, 0.40)<br>
+      shadow: cálida marrón+white inset
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
