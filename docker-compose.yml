@@ -27,7 +27,7 @@ services:
     build: ./frontend
     container_name: biblioteca_frontend
     ports:
-      - "5173:5173"
+      - "5173:80"
     depends_on:
       - backend
 
