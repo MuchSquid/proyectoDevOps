@@ -11,7 +11,8 @@ echo "======================================"
 
 # 1. Tests del Backend
 echo "🐍 [BACKEND] Ejecutando Pytest..."
-export PYTHONPATH=$PYTHONPATH:.
+export PYTHONPATH=$PYTHONPATH:.:backend
+export DATABASE_URL="postgresql://postgres:235689@localhost:5432/biblioteca"
 pytest tests/backend_tests
 BACKEND_EXIT=$?
 
