@@ -84,4 +84,25 @@ docker-compose up --build
 
 ---
 
+## f) Automatización en Scripts Bash
+
+Se ha desarrollado un script integral de automatización en Bash (`scripts/automatizacion.sh`) que centraliza las tareas críticas del ciclo de vida del proyecto.
+
+### Automatización de Clonación y Actualización del Proyecto
+El script gestiona la sincronización con el repositorio remoto de forma inteligente. Si el repositorio ya existe, realiza un `git pull` para obtener los últimos cambios; de lo contrario, permite configurar la clonación inicial. Esto garantiza que todos los desarrolladores trabajen siempre sobre la versión más reciente del código.
+
+### Automatización de Ejecución de Tests
+Mediante una sola opción del menú, el script orquesta la ejecución de las pruebas en ambos extremos del stack:
+*   **Backend:** Configura el `PYTHONPATH` y lanza `pytest` sobre el directorio de pruebas.
+*   **Frontend:** Navega al directorio correspondiente y ejecuta el conjunto de pruebas de Vitest.
+*   **QA Smoke Test:** Adicionalmente, permite ejecutar un script de validación rápida de la API en ejecución para confirmar la conectividad de los endpoints.
+
+### Automatización para Correr el Proyecto en Modo Local
+El script simplifica el despliegue local utilizando Docker Compose. Con una sola instrucción, el script se encarga de:
+1.  Construir las imágenes necesarias (incluyendo el multi-stage build del frontend).
+2.  Levantar los contenedores de base de datos, backend y frontend en segundo plano.
+3.  Informar al usuario sobre los puertos disponibles para el acceso inmediato.
+
+---
+
 *Documentación generada el 8 de mayo de 2026.*
